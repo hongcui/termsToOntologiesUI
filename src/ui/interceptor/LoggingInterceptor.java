@@ -1,4 +1,4 @@
-package interceptor;
+package ui.interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;

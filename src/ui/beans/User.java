@@ -1,4 +1,4 @@
-package beans;
+package ui.beans;
 
 public class User {
 

@@ -1,6 +1,6 @@
-package db;
+package ui.db;
 
-import beans.User;
+import ui.beans.User;
 
 public class AddAdminUser {
 

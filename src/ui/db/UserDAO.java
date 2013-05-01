@@ -1,4 +1,4 @@
-package db;
+package ui.db;
 
 import java.security.MessageDigest;
 import java.sql.PreparedStatement;
@@ -7,7 +7,10 @@ import java.sql.SQLException;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
-import beans.User;
+import db.AbstractDAO;
+
+import ui.beans.User;
+
 
 public class UserDAO extends AbstractDAO {
 
@@ -20,18 +23,16 @@ public class UserDAO extends AbstractDAO {
 	}
 	
 	private UserDAO() throws Exception { 
-		super();
+		this.openConnection();
+		createTableIfNecessary();
+		this.closeConnection();
 	}
 	
 	public void addUser(User user) throws Exception {
 		user.setPassword(getEncryptedPassword(user.getPassword()));
-		
 		this.openConnection();
-		createTableIfNecessary();
-		
 		String sql = "INSERT INTO ui_users (name, password) VALUES ('" + user.getName() + "','" + user.getPassword() + "')";
 		PreparedStatement preparedStatement = this.executeSQL(sql);
-		
 		this.closeConnection();
 	}
 	

@@ -1,12 +1,13 @@
-package action;
+package ui.action;
 
 import org.apache.struts2.ServletActionContext;
 
-import beans.User;
+import ui.beans.User;
+import ui.db.UserDAO;
+
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import db.UserDAO;
 
 public class LoginAction extends ActionSupport {
 	

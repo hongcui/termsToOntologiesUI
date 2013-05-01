@@ -1,17 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<%@ page import="java.util.List, db.*, beans.*" %>
+<%@ page import="java.util.List, ui.db.*, bioportal.beans.*" %>
 
 <h2>Structure</h2>
 <%
-	List<TermDescription> structureTermDescriptions = UnadoptedTermDAO.getInstance().getUnadoptedStructureTerms();
-	for(TermDescription structureTermDescription : structureTermDescriptions) {
+	List<ProvisionalTerm> structureProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedStructureTerms();
+	for(ProvisionalTerm structureProvisionalTerm : structureProvisionalTerms) {
 		%>
-		<s:url action="termDescription" var="termURL" >
-		    <s:param name="term"><%= structureTermDescription.getTerm() %></s:param><br/>
+		<s:url action="provisionalTerm" var="termURL" >
+		    <s:param name="term"><%= structureProvisionalTerm.getTerm() %></s:param><br/>
 		</s:url>
-		<s:a href="%{termURL}"><%= structureTermDescription.getTerm() %></s:a>
+		<s:a href="%{termURL}"><%= structureProvisionalTerm.getTerm() %></s:a>
 
 		<%
 	}
@@ -19,13 +19,13 @@
 
 <h2>Character</h2>
 <%
-	List<TermDescription> characterTermDescriptions = UnadoptedTermDAO.getInstance().getUnadoptedCharacterTerms();
-	for(TermDescription characterTermDescription : characterTermDescriptions) {
+	List<ProvisionalTerm> characterProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedCharacterTerms();
+	for(ProvisionalTerm characterProvisionalTerm : characterProvisionalTerms) {
 		%>
-		<s:url action="termDescription" var="termURL" >
-		    <s:param name="term"><%= characterTermDescription.getTerm() %></s:param><br/>
+		<s:url action="provisionalTerm" var="termURL" >
+		    <s:param name="term"><%= characterProvisionalTerm.getTerm() %></s:param><br/>
 		</s:url>
-		<s:a href="%{termURL}"><%= characterTermDescription.getTerm() %></s:a>
+		<s:a href="%{termURL}"><%= characterProvisionalTerm.getTerm() %></s:a>
 
 		<%
 	}

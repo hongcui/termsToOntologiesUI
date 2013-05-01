@@ -17,10 +17,10 @@
 		</result-types>
 		<interceptors>
 			<interceptor name="loginInterceptor" 
-				class="interceptor.LoginInterceptor">
+				class="ui.interceptor.LoginInterceptor">
              </interceptor>		
 			<interceptor name="loggingInterceptor"
-				class="interceptor.LoggingInterceptor">
+				class="ui.interceptor.LoggingInterceptor">
 			</interceptor>
 			<interceptor-stack name="loggingStack">
 				<interceptor-ref name="loggingInterceptor" />
@@ -29,26 +29,26 @@
 			</interceptor-stack>
 		</interceptors>
 		<action name="login"
-			class="action.LoginAction">
+			class="ui.action.LoginAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">reportAdoptedTerms.tiles</result>
 			<result name="login">WEB-INF/Login.jsp</result>
 			<result name="error">WEB-INF/Login.jsp</result>
 		</action>
-		<action name = "termDescription" class="action.TermDescriptionAction">
+		<action name = "provisionalTerm" class="ui.action.ProvisionalTermAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">term.tiles</result>
 			<result name="login">WEB-INF/Login.jsp</result>
 			<result name="error">WEB-INF/Login.jsp</result>
 		</action>
-		<action name = "termDescriptionSubmission" class="action.TermDescriptionSubmissionAction">
+		<action name = "provisionalTermSubmission" class="ui.action.ProvisionalTermSubmissionAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">term.tiles</result>
 			<result name="input" type="tiles">term.tiles</result>
 			<result name="login">WEB-INF/Login.jsp</result>
 			<result name="error">WEB-INF/Login.jsp</result>
 		</action>	
-		<action name = "checkAdoptedTerms" class="action.CheckAdoptedTermsAction">
+		<action name = "checkAdoptedTerms" class="ui.action.CheckAdoptedTermsAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">reportAdoptedTerms.tiles</result>
 			<result name="login">WEB-INF/Login.jsp</result>
