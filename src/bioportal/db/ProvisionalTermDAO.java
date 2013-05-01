@@ -55,23 +55,26 @@ public class ProvisionalTermDAO extends AbstractDAO {
 	}
 	
 	private void storeProvisionalTerm(String tableName, ProvisionalTerm provisionalTerm) throws SQLException {
-		PreparedStatement preparedStatement = this.prepareStatement("INSERT INTO bioportal_" + tableName + " (`temporaryId`, `permanentId`, `superClass`, " +
-				"`submittedby`, `definition`, `ontologyids`, `preferredname`, `synonyms`, `source`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		preparedStatement.setString(1, provisionalTerm.getTemporaryid());
-		preparedStatement.setString(2, provisionalTerm.getPermanentid());
-		preparedStatement.setString(3, provisionalTerm.getSuperclass());
-		preparedStatement.setString(4, provisionalTerm.getSubmittedby());
-		preparedStatement.setString(5, provisionalTerm.getDefinition());
-		preparedStatement.setString(6, provisionalTerm.getOntologyids());
-		preparedStatement.setString(7, provisionalTerm.getTerm());
-		preparedStatement.setString(8, provisionalTerm.getSynonyms());
-		preparedStatement.setString(9, provisionalTerm.getSource());
+		PreparedStatement preparedStatement = this.prepareStatement("INSERT INTO bioportal_" + tableName + " (`localId`, `temporaryId`, `permanentId`, `superClass`, " +
+				"`submittedby`, `definition`, `ontologyids`, `preferredname`, `synonyms`, `source`, `category`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		preparedStatement.setString(1, provisionalTerm.getLocalId());
+		preparedStatement.setString(2, provisionalTerm.getTemporaryid());
+		preparedStatement.setString(3, provisionalTerm.getPermanentid());
+		preparedStatement.setString(4, provisionalTerm.getSuperclass());
+		preparedStatement.setString(5, provisionalTerm.getSubmittedby());
+		preparedStatement.setString(6, provisionalTerm.getDefinition());
+		preparedStatement.setString(7, provisionalTerm.getOntologyids());
+		preparedStatement.setString(8, provisionalTerm.getTerm());
+		preparedStatement.setString(9, provisionalTerm.getSynonyms());
+		preparedStatement.setString(10, provisionalTerm.getSource());
+		preparedStatement.setString(11, provisionalTerm.getCategory());
 		System.out.println(preparedStatement.toString());
 		preparedStatement.executeUpdate();
 	}
 	
 	private void createTableIfNecessary(String tableName) throws SQLException {
 		this.executeSQL("CREATE TABLE IF NOT EXISTS bioportal_" + tableName + "(" +
+				" `localId` varchar(100) NOT NULL, " +
 				" `temporaryId` varchar(100) NOT NULL, " +
 				"  `permanentId` varchar(100) DEFAULT NULL, " +
 				" `superClass` varchar(100) DEFAULT NULL, " +
@@ -81,7 +84,8 @@ public class ProvisionalTermDAO extends AbstractDAO {
 				"  `preferredName` varchar(100) DEFAULT NULL, " +
 				"  `synonyms` varchar(100) DEFAULT NULL, " +
 				"  `source` varchar(100) DEFAULT NULL, " +
-				"  PRIMARY KEY (`temporaryId`))");
+				"  `category` varchar(100) DEFAULT NULL, " +
+				"  PRIMARY KEY (`localId`))");
 	}
 	
 	public List<ProvisionalTerm> getAll(String tableName) throws SQLException {
@@ -90,7 +94,9 @@ public class ProvisionalTermDAO extends AbstractDAO {
 		ResultSet resultSet = preparedStatement.getResultSet();
 		while(resultSet.next()) {
 			result.add(new ProvisionalTerm(
+					resultSet.getString("localId"),
 					resultSet.getString("preferredName"), 
+					resultSet.getString("category"),
 					resultSet.getString("definition"), 
 					resultSet.getString("superClass"),
 					resultSet.getString("synonyms"),

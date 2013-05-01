@@ -1,11 +1,16 @@
 package ui.db;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import db.AbstractDAO;
+
 import bioportal.beans.ProvisionalTerm;
 
-public class UnadoptedTermDAO {
+public class UnadoptedTermDAO extends AbstractDAO {
 
 	private static UnadoptedTermDAO instance;
 
@@ -17,26 +22,82 @@ public class UnadoptedTermDAO {
 		return instance;
 	}
 	
-	public List<ProvisionalTerm> getUnadoptedStructureTerms() {
+	public List<ProvisionalTerm> getUnadoptedStructureTerms() throws SQLException {
 		List<ProvisionalTerm> result = new ArrayList<ProvisionalTerm>();
-		result.add(new ProvisionalTerm("structureA", "def1", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("structureB", "def2", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("structureC", "def3", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("structureD", "def4", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("structureE", "def5", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("structureF", "def6", "", "", "", "", "", "", ""));
+		this.openConnection();
 		
+		String sql = "SELECT * FROM dummynewterms WHERE category = 'structure'";
+		PreparedStatement preparedStatement = this.executeSQL(sql);
+		ResultSet resultSet = preparedStatement.getResultSet();
+		while(resultSet.next()) {
+			result.add(new ProvisionalTerm(
+						resultSet.getString("localId"),
+						resultSet.getString("term"),
+						"",
+						"",
+						"",
+						"", 
+						"",
+						"",
+						"", 
+						"", 
+						resultSet.getString("source")
+					));
+		}
+		
+		this.closeConnection();		
 		return result;
 	}
 	
-	public List<ProvisionalTerm> getUnadoptedCharacterTerms() {
+	public List<ProvisionalTerm> getUnadoptedCharacterTerms() throws SQLException {
 		List<ProvisionalTerm> result = new ArrayList<ProvisionalTerm>();
-		result.add(new ProvisionalTerm("characterA", "def1", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("characterB", "def2", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("characterC", "def3", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("characterD", "def4", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("characterE", "def5", "", "", "", "", "", "", ""));
-		result.add(new ProvisionalTerm("characterG", "def6", "", "", "", "", "", "", ""));
+		this.openConnection();
+		
+		String sql = "SELECT * FROM dummynewterms WHERE category = 'character'";
+		PreparedStatement preparedStatement = this.executeSQL(sql);
+		ResultSet resultSet = preparedStatement.getResultSet();
+		while(resultSet.next()) {
+			result.add(new ProvisionalTerm(
+						resultSet.getString("localId"),
+						resultSet.getString("term"),
+						"",
+						"",
+						"",
+						"", 
+						"",
+						"",
+						"", 
+						"", 
+						resultSet.getString("source")
+					));
+		}
+		
+		this.closeConnection();
+		return result;
+	}
+
+	public ProvisionalTerm getUnadoptedTerm(String localId) throws SQLException {
+		ProvisionalTerm result = null;
+		this.openConnection();
+		String sql = "SELECT * FROM dummynewterms WHERE localId = " + localId;
+		System.out.println(sql);
+		PreparedStatement preparedStatement = this.executeSQL(sql);
+		ResultSet resultSet = preparedStatement.getResultSet();
+		resultSet.next();
+		result = new ProvisionalTerm(
+				resultSet.getString("localId"),
+				resultSet.getString("term"),
+				"",
+				"",
+				"",
+				"", 
+				"",
+				"",
+				"", 
+				"", 
+				resultSet.getString("source")
+			);
+		this.closeConnection();
 		return result;
 	}
 }

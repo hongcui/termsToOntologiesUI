@@ -1,5 +1,6 @@
 package ui.action;
 
+import ui.db.UnadoptedTermDAO;
 import bioportal.beans.ProvisionalTerm;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -7,14 +8,16 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ProvisionalTermAction extends ActionSupport {
 
 	private ProvisionalTerm provisionalTerm;
-	private String term;
+	private String localId;
 	
 	public String execute() {
 		//here i would load the extra info from the database as far it is available already e.g. source;
-		provisionalTerm = new ProvisionalTerm();
-		provisionalTerm.setTerm(term);
-		provisionalTerm.setDefinition("the definition that i retrieved for term");
-		System.out.println("termaction " + term);
+		try {
+			provisionalTerm = UnadoptedTermDAO.getInstance().getUnadoptedTerm(localId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		}
 		return SUCCESS;
 	}
 
@@ -26,11 +29,11 @@ public class ProvisionalTermAction extends ActionSupport {
 		this.provisionalTerm = provisionalTerm;
 	}
 
-	public String getTerm() {
-		return term;
+	public String getLocalId() {
+		return localId;
 	}
 
-	public void setTerm(String term) {
-		this.term = term;
+	public void setLocalId(String localId) {
+		this.localId = localId;
 	}	
 }

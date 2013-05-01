@@ -9,7 +9,7 @@
 	for(ProvisionalTerm structureProvisionalTerm : structureProvisionalTerms) {
 		%>
 		<s:url action="provisionalTerm" var="termURL" >
-		    <s:param name="term"><%= structureProvisionalTerm.getTerm() %></s:param><br/>
+		    <s:param name="localId"><%= structureProvisionalTerm.getLocalId() %></s:param><br/>
 		</s:url>
 		<s:a href="%{termURL}"><%= structureProvisionalTerm.getTerm() %></s:a>
 
@@ -23,7 +23,7 @@
 	for(ProvisionalTerm characterProvisionalTerm : characterProvisionalTerms) {
 		%>
 		<s:url action="provisionalTerm" var="termURL" >
-		    <s:param name="term"><%= characterProvisionalTerm.getTerm() %></s:param><br/>
+		    <s:param name="localId"><%= characterProvisionalTerm.getLocalId() %></s:param><br/>
 		</s:url>
 		<s:a href="%{termURL}"><%= characterProvisionalTerm.getTerm() %></s:a>
 

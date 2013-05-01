@@ -2,7 +2,9 @@ package bioportal.beans;
 
 public class ProvisionalTerm {
 
+	private String localId;
 	private String term;
+	private String category;
 	private String definition;
 	private String superclass;
 	private String synonyms;
@@ -14,11 +16,13 @@ public class ProvisionalTerm {
 
 	public ProvisionalTerm() { }
 
-	public ProvisionalTerm(String term, String definition, String superclass,
+	public ProvisionalTerm(String localId, String term, String category, String definition, String superclass,
 			String synonyms, String ontologyids, String submittedby,
 			String temporaryid, String permanentid, String source) {
 		super();
+		this.localId = localId;
 		this.term = term;
+		this.category = category;
 		this.definition = definition;
 		this.superclass = superclass;
 		this.synonyms = synonyms;
@@ -27,6 +31,30 @@ public class ProvisionalTerm {
 		this.temporaryid = temporaryid;
 		this.permanentid = permanentid;
 		this.source = source;
+	}
+
+	public boolean hasLocalId() {
+		return this.localId != null;
+	}
+	
+	public String getLocalId() {
+		return localId;
+	}
+
+	public void setLocalId(String localId) {
+		this.localId = localId;
+	}
+	
+	public boolean hasCategory() {
+		return this.category != null;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getPermanentid() {
@@ -148,6 +176,7 @@ public class ProvisionalTerm {
 		stringBuilder.append("temporaryid: " + this.temporaryid + "\n");
 		stringBuilder.append("permanentid: " + this.permanentid + "\n");
 		stringBuilder.append("source: " + this.source + "\n");
+		stringBuilder.append("category: " + this.category + "\n");
 		return stringBuilder.toString();
 	}
 }

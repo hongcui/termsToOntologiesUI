@@ -2,6 +2,8 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <s:form action="provisionalTermSubmission" method="post" validate="true">
+		<s:hidden name="provisionalTerm.localId" />
+		<s:hidden name="provisionalTerm.category" />
 		<s:textfield name="provisionalTerm.term" label="term"/>
         <s:textfield name="provisionalTerm.definition" label="definition"/>    
         <s:textfield name="provisionalTerm.source" label="source"/>
