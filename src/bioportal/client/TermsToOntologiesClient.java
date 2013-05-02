@@ -79,4 +79,12 @@ public class TermsToOntologiesClient {
 		}
 		return null;
 	}
+
+	public void updateTerm(ProvisionalTerm provisionalTerm) throws Exception {
+		bioPortalClient.updateProvisionalTerm(provisionalTerm.getTemporaryid(), provisionalTerm);
+	}
+
+	public void deleteTerm(ProvisionalTerm provisionalTerm) throws Exception {
+		bioPortalClient.deleteProvisionalTerm(provisionalTerm.getTemporaryid());
+	}
 }

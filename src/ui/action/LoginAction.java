@@ -19,12 +19,9 @@ public class LoginAction extends ActionSupport {
 		try {
 			if(UserDAO.getInstance().checkIfExists(new User(this.username, this.password))) {
 				ServletActionContext.getRequest().getSession().setAttribute(USER_HANDLE, this.username);
-				new CheckAdoptedTermsAction();
-				return (new CheckAdoptedTermsAction()).execute();
-				//return SUCCESS;
+				return SUCCESS;
 			}
 		} catch (Exception e) {
-			System.out.println("print exception here");
 			e.printStackTrace();
 		}
 		addActionError(getText("error.login"));		

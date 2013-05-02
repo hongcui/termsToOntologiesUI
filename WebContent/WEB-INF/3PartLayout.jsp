@@ -13,20 +13,8 @@
 		</td>
 	</tr>
 	<tr>
-		<td height="1000"><tiles:insertAttribute name="menu" /></td>
-		<td width="1400" valign="top">
-			<table border="1" cellpadding="2" cellspacing="2" align="center">
-				<tr>
-					<td height="200" width="1400">
-						<tiles:insertAttribute name="body" />
-					</td>
-				</tr>
-				<tr>
-					<td height="800" width="1400">
-						<iframe height="800" width="1400" src="http://www.ebi.ac.uk/ontology-lookup/"></iframe> 
-					</td>
-				</tr>
-			</table>
+		<td height="400" width="1400" valign="top">
+			<tiles:insertAttribute name="body" />
 		</td>
 	</tr>
 	<tr>

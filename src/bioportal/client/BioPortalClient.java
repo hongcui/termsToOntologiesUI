@@ -191,12 +191,13 @@ public class BioPortalClient {
 		String apiKey = "b5ca12b0-23f8-4627-be61-1e045cf73a7d";
 		BioPortalClient bioPortalClient = new BioPortalClient(url, userId, apiKey);	
 		
-		for(int i=0; i<56; i++) {
+		//for(int i=0; i<56; i++) {
 			Filter filter = new Filter();
-			filter.setPageSize("279");
-			filter.setPageNum(String.valueOf(i));
+			filter.setSubmittedBy(userId);
+			//filter.setPageSize("279");
+			//filter.setPageNum(String.valueOf(i));
 			Success success = bioPortalClient.getProvisionalTerms(filter);
-		}
+		//}
 		
 		/*System.out.println("Provide a new term: ");
 		ProvisionalTerm provisionalTerm = new ProvisionalTerm();

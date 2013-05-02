@@ -33,7 +33,7 @@ public class UnadoptedTermDAO extends AbstractDAO {
 			result.add(new ProvisionalTerm(
 						resultSet.getString("localId"),
 						resultSet.getString("term"),
-						"",
+						resultSet.getString("category"),
 						"",
 						"",
 						"", 
@@ -60,7 +60,7 @@ public class UnadoptedTermDAO extends AbstractDAO {
 			result.add(new ProvisionalTerm(
 						resultSet.getString("localId"),
 						resultSet.getString("term"),
-						"",
+						resultSet.getString("category"),
 						"",
 						"",
 						"", 
@@ -80,14 +80,13 @@ public class UnadoptedTermDAO extends AbstractDAO {
 		ProvisionalTerm result = null;
 		this.openConnection();
 		String sql = "SELECT * FROM dummynewterms WHERE localId = " + localId;
-		System.out.println(sql);
 		PreparedStatement preparedStatement = this.executeSQL(sql);
 		ResultSet resultSet = preparedStatement.getResultSet();
 		resultSet.next();
 		result = new ProvisionalTerm(
 				resultSet.getString("localId"),
 				resultSet.getString("term"),
-				"",
+				resultSet.getString("category"),
 				"",
 				"",
 				"", 
@@ -124,5 +123,29 @@ public class UnadoptedTermDAO extends AbstractDAO {
 				"  PRIMARY KEY (`localId`))";
 		this.executeSQL(sql);
 		this.closeConnection();
+	}
+
+	public ProvisionalTerm getFirstUnadoptedTerm() throws Exception {
+		ProvisionalTerm result = null;
+		this.openConnection();
+		String sql = "SELECT * FROM dummynewterms ORDER BY localId";
+		PreparedStatement preparedStatement = this.executeSQL(sql);
+		ResultSet resultSet = preparedStatement.getResultSet();
+		resultSet.next();
+		result = new ProvisionalTerm(
+				resultSet.getString("localId"),
+				resultSet.getString("term"),
+				resultSet.getString("category"),
+				"",
+				"",
+				"", 
+				"",
+				"",
+				"", 
+				"", 
+				resultSet.getString("source")
+			);
+		this.closeConnection();
+		return result;
 	}
 }

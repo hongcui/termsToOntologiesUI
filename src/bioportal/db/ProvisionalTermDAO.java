@@ -28,7 +28,6 @@ public class ProvisionalTermDAO extends AbstractDAO {
 	}
 
 	public void addAwaitingAdoption(ProvisionalTerm provisionalTerm) throws SQLException {
-		System.out.println(provisionalTerm.toString());
 		this.openConnection();
 		this.storeProvisionalTerm("awaitingadoption", provisionalTerm);		
 		this.closeConnection();
@@ -36,7 +35,35 @@ public class ProvisionalTermDAO extends AbstractDAO {
 
 	public List<ProvisionalTerm> getAllAwaitingAdoption() throws SQLException {
 		this.openConnection();
-		List<ProvisionalTerm> result =  this.getAll("awaitingAdoption");
+		List<ProvisionalTerm> result =  this.getAll("awaitingAdoption", "");
+		this.closeConnection();
+		return result;
+	}
+	
+	public List<ProvisionalTerm> getAllStructureAwaitingAdoption() throws SQLException {
+		this.openConnection();
+		List<ProvisionalTerm> result =  this.getAll("awaitingAdoption", "WHERE category='structure'");
+		this.closeConnection();
+		return result;
+	}
+	
+	public List<ProvisionalTerm> getAdoptedStructureTerms() throws SQLException {
+		this.openConnection();
+		List<ProvisionalTerm> result =  this.getAll("adopted", "WHERE category='structure'");
+		this.closeConnection();
+		return result;
+	}
+	
+	public List<ProvisionalTerm> getAdoptedCharacterTerms() throws SQLException {
+		this.openConnection();
+		List<ProvisionalTerm> result =  this.getAll("adopted", "WHERE category='character'");
+		this.closeConnection();
+		return result;
+	}
+	
+	public List<ProvisionalTerm> getAllCharacterAwaitingAdoption() throws SQLException {
+		this.openConnection();
+		List<ProvisionalTerm> result =  this.getAll("awaitingAdoption", "WHERE category='character'");
 		this.closeConnection();
 		return result;
 	}
@@ -88,9 +115,12 @@ public class ProvisionalTermDAO extends AbstractDAO {
 				"  PRIMARY KEY (`localId`))");
 	}
 	
-	public List<ProvisionalTerm> getAll(String tableName) throws SQLException {
+	public List<ProvisionalTerm> getAll(String tableName, String where) throws SQLException {
 		List<ProvisionalTerm> result = new ArrayList<ProvisionalTerm>();
-		PreparedStatement preparedStatement = this.executeSQL("SELECT * FROM bioportal_" + tableName);
+		PreparedStatement preparedStatement = this.executeSQL("SELECT * FROM bioportal_" + tableName
+				+ " " + where);
+		System.out.println("SELECT * FROM bioportal_" + tableName
+				+ " " + where);
 		ResultSet resultSet = preparedStatement.getResultSet();
 		while(resultSet.next()) {
 			result.add(new ProvisionalTerm(
@@ -125,5 +155,39 @@ public class ProvisionalTermDAO extends AbstractDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ProvisionalTerm getFirstAwaitingTerm() throws SQLException {
+		this.openConnection();
+		ProvisionalTerm result = getFirst("awaitingadoption");
+		this.closeConnection();
+		return result;
+	}
+
+	public ProvisionalTerm getFirstAdoptedTerm() throws SQLException {
+		this.openConnection();
+		ProvisionalTerm result = getFirst("adopted");
+		this.closeConnection();
+		return result;
+	}
+	
+	public ProvisionalTerm getFirst(String tableName) throws SQLException {
+		PreparedStatement preparedStatement = this.executeSQL("SELECT * FROM bioportal_" + tableName + " " +
+				"ORDER BY localId");
+		ResultSet resultSet = preparedStatement.getResultSet();
+		resultSet.next();
+		return new ProvisionalTerm(
+					resultSet.getString("localId"),
+					resultSet.getString("preferredName"), 
+					resultSet.getString("category"),
+					resultSet.getString("definition"), 
+					resultSet.getString("superClass"),
+					resultSet.getString("synonyms"),
+					resultSet.getString("ontologyIds"), 
+					resultSet.getString("submittedBy"), 
+					resultSet.getString("temporaryId"), 
+					resultSet.getString("permanentId"),
+					resultSet.getString("source")
+					);
 	}
 }

@@ -31,7 +31,7 @@
 		<action name="login"
 			class="ui.action.LoginAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
-			<result name="success" type="tiles">reportAdoptedTerms.tiles</result>
+			<result name="success" type="tiles">welcome.tiles</result>
 			<result name="login">WEB-INF/Login.jsp</result>
 			<result name="error">WEB-INF/Login.jsp</result>
 		</action>
@@ -39,20 +39,23 @@
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">term.tiles</result>
 			<result name="login">WEB-INF/Login.jsp</result>
-			<result name="error">WEB-INF/Login.jsp</result>
+			<result name="error" type="tiles">error.tiles</result>
 		</action>
 		<action name = "provisionalTermSubmission" class="ui.action.ProvisionalTermSubmissionAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">term.tiles</result>
 			<result name="input" type="tiles">term.tiles</result>
 			<result name="login">WEB-INF/Login.jsp</result>
-			<result name="error">WEB-INF/Login.jsp</result>
+			<result name="error" type="tiles">error.tiles</result>
 		</action>	
-		<action name = "checkAdoptedTerms" class="ui.action.CheckAdoptedTermsAction">
+		<action name = "menuAction" class="ui.action.MenuAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
-			<result name="success" type="tiles">reportAdoptedTerms.tiles</result>
+			<result name="send" type="tiles">term.tiles</result>
+			<result name="update" type="tiles">term.tiles</result>
+			<result name="check" type="tiles">reportAdoptedTerms.tiles</result>
 			<result name="login">WEB-INF/Login.jsp</result>
-			<result name="error">WEB-INF/Login.jsp</result>
-		</action>		
+			<result name="error" type="tiles">error.tiles</result>
+		</action>			
+	
 	</package>
 </struts>

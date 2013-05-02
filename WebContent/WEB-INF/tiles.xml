@@ -6,25 +6,39 @@
 
 <tiles-definitions>
 
-	<definition name="baseLayout" template="/WEB-INF/BaseLayout.jsp">
+	<definition name="allLayout" template="/WEB-INF/AllLayout.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/Header.jsp" />
 		<put-attribute name="menu" value="/WEB-INF/Menu.jsp" />
 		<put-attribute name="body" value="" />
+		<put-attribute name="ontologyLookup" value="/WEB-INF/OntologyLookup.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/Footer.jsp" />
+	</definition>
+	<definition name="3PartLayout" template="/WEB-INF/3PartLayout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/Header.jsp" />
+		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/Footer.jsp" />
 	</definition>
 
-	<definition name="welcome.tiles" extends="baseLayout">
+	<definition name="welcome.tiles" extends="3PartLayout">
 		<put-attribute name="title" value="Welcome" />
 		<put-attribute name="body" value="/WEB-INF/Welcome.jsp" />
 	</definition>
-	<definition name="term.tiles" extends="baseLayout">
-		<put-attribute name="title" value="Term" />
+	<definition name="term.tiles" extends="allLayout">
+		<put-attribute name="title" value="Send Term" />
 		<put-attribute name="body" value="/WEB-INF/Term.jsp" />
 	</definition>
-		<definition name="reportAdoptedTerms.tiles" extends="baseLayout">
-		<put-attribute name="title" value="Welcome" />
+	<definition name="updateTerm.tiles" extends="allLayout">
+		<put-attribute name="title" value="Update Term" />
+		<put-attribute name="body" value="/WEB-INF/Term.jsp" />
+	</definition>
+	<definition name="reportAdoptedTerms.tiles" extends="3PartLayout">
+		<put-attribute name="title" value="Report Adopted Terms" />
 		<put-attribute name="body" value="/WEB-INF/ReportAdoptedTerms.jsp" />
 	</definition>
-
+		<definition name="error.tiles" extends="3PartLayout">
+		<put-attribute name="title" value="Error" />
+		<put-attribute name="body" value="/WEB-INF/Error.jsp" />
+	</definition>
 </tiles-definitions>

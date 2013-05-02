@@ -9,6 +9,7 @@ public class ProvisionalTermAction extends ActionSupport {
 
 	private ProvisionalTerm provisionalTerm;
 	private String localId;
+	private String action;
 	
 	public String execute() {
 		//here i would load the extra info from the database as far it is available already e.g. source;
@@ -35,5 +36,15 @@ public class ProvisionalTermAction extends ActionSupport {
 
 	public void setLocalId(String localId) {
 		this.localId = localId;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
 	}	
+	
+	
 }
