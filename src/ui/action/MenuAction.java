@@ -34,6 +34,8 @@ public class MenuAction extends ActionSupport {
 		case "update":
 			try {
 				provisionalTerm = ProvisionalTermDAO.getInstance().getFirstAwaitingTerm();
+				if(provisionalTerm==null)
+					return "empty";
 			} catch (Exception e) {
 				e.printStackTrace();
 				return ERROR;
@@ -42,6 +44,8 @@ public class MenuAction extends ActionSupport {
 		case "adopted":
 			try {
 				provisionalTerm = ProvisionalTermDAO.getInstance().getFirstAdoptedTerm();
+				if(provisionalTerm==null)
+					return "empty";
 			} catch (Exception e) {
 				e.printStackTrace();
 				return ERROR;

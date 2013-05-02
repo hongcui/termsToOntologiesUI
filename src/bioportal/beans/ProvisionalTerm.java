@@ -167,6 +167,7 @@ public class ProvisionalTerm {
 	
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("localId: " + this.localId + "\n");
 		stringBuilder.append("term: " + this.term + "\n");
 		stringBuilder.append("definition: " + this.definition + "\n");
 		stringBuilder.append("superclass: " + this.superclass + "\n");

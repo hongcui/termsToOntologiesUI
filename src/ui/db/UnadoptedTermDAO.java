@@ -104,6 +104,8 @@ public class UnadoptedTermDAO extends AbstractDAO {
 		createTable();
 		insertDummyData();
 	}
+	
+	
 
 	private void insertDummyData() throws Exception {
 		this.openConnection();

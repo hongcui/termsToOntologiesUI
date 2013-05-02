@@ -10,8 +10,11 @@ import javax.xml.bind.JAXBElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ui.db.UnadoptedTermDAO;
+
 import bioportal.db.ProvisionalTermDAO;
 
+import bioportal.beans.Filter;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.beans.response.Success;
 
@@ -82,9 +85,30 @@ public class TermsToOntologiesClient {
 
 	public void updateTerm(ProvisionalTerm provisionalTerm) throws Exception {
 		bioPortalClient.updateProvisionalTerm(provisionalTerm.getTemporaryid(), provisionalTerm);
+		ProvisionalTermDAO.getInstance().updateAwaitingAdoption(provisionalTerm);
 	}
 
 	public void deleteTerm(ProvisionalTerm provisionalTerm) throws Exception {
 		bioPortalClient.deleteProvisionalTerm(provisionalTerm.getTemporaryid());
+		ProvisionalTermDAO.getInstance().deleteAwaitingAdoption(provisionalTerm);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		String url = "http://rest.bioontology.org/bioportal/";
+		String userId = "40522";
+		String apiKey = "b5ca12b0-23f8-4627-be61-1e045cf73a7d";
+		BioPortalClient bioPortalClient = new BioPortalClient(url, userId, apiKey);	
+		
+		for(int i=0; i<12; i++) {
+			Filter filter = new Filter();
+			filter.setPageSize("1");
+			filter.setPageNum(String.valueOf(i));
+			filter.setSubmittedBy(userId);
+			Success success = bioPortalClient.getProvisionalTerms(filter);
+			
+			TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient();
+			String id = termsToOntologiesClient.getIdFromSuccessfulCreate(success, "id");
+			bioPortalClient.deleteProvisionalTerm(id);
+		}
 	}
 }

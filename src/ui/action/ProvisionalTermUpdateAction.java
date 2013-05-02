@@ -8,6 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ProvisionalTermUpdateAction extends ActionSupport {
 
 	private ProvisionalTerm provisionalTerm;
+	private String action = "update";
 	
 	public String execute() {
 		try {
@@ -27,5 +28,13 @@ public class ProvisionalTermUpdateAction extends ActionSupport {
 
 	public void setProvisionalTerm(ProvisionalTerm provisionalTerm) {
 		this.provisionalTerm = provisionalTerm;
+	}
+	
+	public String getAction() {
+		return action ;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
 	}
 }

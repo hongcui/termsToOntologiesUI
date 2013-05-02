@@ -29,6 +29,8 @@ public class ProvisionalTermDAO extends AbstractDAO {
 
 	public void addAwaitingAdoption(ProvisionalTerm provisionalTerm) throws SQLException {
 		this.openConnection();
+		System.out.println("this is what i store");
+		System.out.println(provisionalTerm.toString());
 		this.storeProvisionalTerm("awaitingadoption", provisionalTerm);		
 		this.closeConnection();
 	}
@@ -77,8 +79,12 @@ public class ProvisionalTermDAO extends AbstractDAO {
 	
 	public void deleteAwaitingAdoption(ProvisionalTerm provisionalTerm) throws SQLException {
 		this.openConnection();
-		this.executeSQL("DELETE FROM awaitingadoption WHERE temporaryId='" + provisionalTerm.getTemporaryid() + "'");
+		this.deleteTerm("awaitingadoption", provisionalTerm);
 		this.closeConnection();
+	}
+	
+	public void deleteTerm(String table, ProvisionalTerm provisionalTerm) throws SQLException {
+		this.executeSQL("DELETE FROM bioportal_" + table + " WHERE temporaryId='" + provisionalTerm.getTemporaryid() + "'");
 	}
 	
 	private void storeProvisionalTerm(String tableName, ProvisionalTerm provisionalTerm) throws SQLException {
@@ -95,7 +101,6 @@ public class ProvisionalTermDAO extends AbstractDAO {
 		preparedStatement.setString(9, provisionalTerm.getSynonyms());
 		preparedStatement.setString(10, provisionalTerm.getSource());
 		preparedStatement.setString(11, provisionalTerm.getCategory());
-		System.out.println(preparedStatement.toString());
 		preparedStatement.executeUpdate();
 	}
 	
@@ -118,8 +123,6 @@ public class ProvisionalTermDAO extends AbstractDAO {
 	public List<ProvisionalTerm> getAll(String tableName, String where) throws SQLException {
 		List<ProvisionalTerm> result = new ArrayList<ProvisionalTerm>();
 		PreparedStatement preparedStatement = this.executeSQL("SELECT * FROM bioportal_" + tableName
-				+ " " + where);
-		System.out.println("SELECT * FROM bioportal_" + tableName
 				+ " " + where);
 		ResultSet resultSet = preparedStatement.getResultSet();
 		while(resultSet.next()) {
@@ -174,6 +177,65 @@ public class ProvisionalTermDAO extends AbstractDAO {
 	public ProvisionalTerm getFirst(String tableName) throws SQLException {
 		PreparedStatement preparedStatement = this.executeSQL("SELECT * FROM bioportal_" + tableName + " " +
 				"ORDER BY localId");
+		ResultSet resultSet = preparedStatement.getResultSet();
+		if(!resultSet.next())
+			return null;
+		return new ProvisionalTerm(
+					resultSet.getString("localId"),
+					resultSet.getString("preferredName"), 
+					resultSet.getString("category"),
+					resultSet.getString("definition"), 
+					resultSet.getString("superClass"),
+					resultSet.getString("synonyms"),
+					resultSet.getString("ontologyIds"), 
+					resultSet.getString("submittedBy"), 
+					resultSet.getString("temporaryId"), 
+					resultSet.getString("permanentId"),
+					resultSet.getString("source")
+					);
+	}
+
+	public void updateAwaitingAdoption(ProvisionalTerm provisionalTerm) throws SQLException {
+		this.openConnection();
+		System.out.println("UPDATE bioportal_awaitingadoption " +
+				"SET preferredName='" + provisionalTerm.getTerm() + "'," +
+				" definition='" + provisionalTerm.getDefinition() + "'," +
+				" superClass='" + provisionalTerm.getSuperclass() + "'," +
+				" synonyms='" + provisionalTerm.getSynonyms() + "'," +
+				" ontologyIds='" + provisionalTerm.getOntologyids() + "'," +
+				" source='" + provisionalTerm.getSource() + "' WHERE localId='" + provisionalTerm.getLocalId());
+		
+		PreparedStatement preparedStatement = this.prepareStatement("UPDATE bioportal_awaitingadoption SET " +
+				"preferredName = ?, definition = ?, superClass = ?, synonyms = ?, ontologyIds = ?, source = ? WHERE localId = ?");
+		preparedStatement.setString(1, provisionalTerm.getTerm());
+		preparedStatement.setString(2, provisionalTerm.getDefinition());
+		preparedStatement.setString(3, provisionalTerm.getSuperclass());
+		preparedStatement.setString(4, provisionalTerm.getSynonyms());
+		preparedStatement.setString(5, provisionalTerm.getOntologyids());
+		preparedStatement.setString(6, provisionalTerm.getSource());
+		preparedStatement.setString(7, provisionalTerm.getLocalId());
+		preparedStatement.executeUpdate();
+		
+		this.closeConnection();
+	}
+
+	public ProvisionalTerm getAdopted(String localId) throws Exception {
+		this.openConnection();
+		ProvisionalTerm result = getTerm("adopted", localId);
+		this.closeConnection();
+		return result;
+	}
+
+	public ProvisionalTerm getAwaitingAdoption(String localId) throws Exception {
+		this.openConnection();
+		ProvisionalTerm result = getTerm("awaitingadoption", localId);
+		this.closeConnection();
+		return result;
+	}
+	
+	public ProvisionalTerm getTerm(String tableName, String localId) throws Exception {
+		PreparedStatement preparedStatement = this.executeSQL("SELECT * FROM bioportal_" + tableName + " " +
+				"WHERE localId = " + localId);
 		ResultSet resultSet = preparedStatement.getResultSet();
 		resultSet.next();
 		return new ProvisionalTerm(

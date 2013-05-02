@@ -191,6 +191,16 @@ public class BioPortalClient {
 		String apiKey = "b5ca12b0-23f8-4627-be61-1e045cf73a7d";
 		BioPortalClient bioPortalClient = new BioPortalClient(url, userId, apiKey);	
 		
+		/*String[] ids = new String[] { 
+				"http://purl.bioontology.org/ontology/provisional/4170d1ac-c756-4501-a9cc-5306e4f18ee9",
+				"http://purl.bioontology.org/ontology/provisional/afff797b-762c-4f0f-9d55-1f42d88bf3d1",
+				"http://purl.bioontology.org/ontology/provisional/e4552207-4b14-450c-832a-dfcbc989c099" };
+				
+		for(String id : ids) {
+			bioPortalClient.deleteProvisionalTerm(id);
+		}*/
+		
+		
 		//for(int i=0; i<56; i++) {
 			Filter filter = new Filter();
 			filter.setSubmittedBy(userId);
