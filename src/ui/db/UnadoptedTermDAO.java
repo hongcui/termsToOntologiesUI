@@ -100,4 +100,29 @@ public class UnadoptedTermDAO extends AbstractDAO {
 		this.closeConnection();
 		return result;
 	}
+
+	public void createDummyData() throws Exception {
+		createTable();
+		insertDummyData();
+	}
+
+	private void insertDummyData() throws Exception {
+		this.openConnection();
+		String sql = "INSERT INTO `dummynewterms` (`localId`, `term`, `category`, `source`) VALUES" +
+				"(0, 'blue', 'character', '1.txt'), (1, 'stem', 'structure', '2.txt');";
+		this.executeSQL(sql);
+		this.closeConnection();
+	}
+
+	private void createTable() throws Exception {
+		this.openConnection();
+		String sql = "CREATE TABLE IF NOT EXISTS `dummynewterms` (" +
+				" `localId` int(11) NOT NULL," +
+				" `term` varchar(100) NOT NULL," +
+				" `category` varchar(100) NOT NULL," +
+				" `source` varchar(100) NOT NULL," +
+				"  PRIMARY KEY (`localId`))";
+		this.executeSQL(sql);
+		this.closeConnection();
+	}
 }
