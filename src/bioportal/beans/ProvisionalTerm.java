@@ -66,7 +66,7 @@ public class ProvisionalTerm {
 	}
 
 	public String getSuperclass() {
-		return superclass;
+		return superclass.replace("http://purl.obolibrary.org/obo/", "");
 	}
 
 	public void setSuperclass(String superclass) {

@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
+<script type="text/javascript" src="js.js"></script>  
 </head>
 <body>
 <table border="1" cellpadding="2" cellspacing="2" align="center">
@@ -13,12 +14,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td height="1000"><tiles:insertAttribute name="menu" /></td>
+		<td height="1000"><div valign="top"><tiles:insertAttribute name="menu" /></div></td>
 		<td width="1400" valign="top">
 			<table border="1" cellpadding="2" cellspacing="2" align="center">
 				<tr>
 					<td height="200" width="1400">
-						<tiles:insertAttribute name="body" />
+						<div align="center"><tiles:insertAttribute name="body" /></div>
 					</td>
 				</tr>
 				<tr>

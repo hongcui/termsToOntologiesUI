@@ -9,6 +9,8 @@ import javax.xml.bind.JAXBException;
 
 import bioportal.beans.Filter;
 import bioportal.beans.ProvisionalTerm;
+import bioportal.beans.response.Entry;
+import bioportal.beans.response.Relations;
 import bioportal.beans.response.Success;
 
 import com.sun.jersey.api.client.Client;
@@ -29,7 +31,8 @@ public class BioPortalClient {
 	private String apiKey;
 	private String apiUrl;
 	private Client client;
-
+	private String superclassPrefix = "http://purl.obolibrary.org/obo/";
+	
 	/**
 	 * @param apiUrl
 	 * @param apiKey
@@ -134,7 +137,7 @@ public class BioPortalClient {
 	    if(provisionalTerm.hasSynonyms())
 	    	formData.add("synonyms", provisionalTerm.getSynonyms());
 	    if(provisionalTerm.hasSuperClass())
-	    	formData.add("superclass", provisionalTerm.getSuperclass());
+	    	formData.add("superclass", superclassPrefix + provisionalTerm.getSuperclass());
 	    
 	    return webResource.queryParams(queryParams).type(MediaType.APPLICATION_FORM_URLENCODED_TYPE).post(Success.class, formData);
 	}
@@ -164,7 +167,7 @@ public class BioPortalClient {
 	    if(provisionalTerm.hasPermanentId())
 	    	queryParams.add("permanentid", provisionalTerm.getPermanentid());
 	    if(provisionalTerm.hasSuperClass())
-	    	queryParams.add("superclass", provisionalTerm.getSuperclass());
+	    	queryParams.add("superclass", superclassPrefix + provisionalTerm.getSuperclass());
 	    
 	    return webResource.queryParams(queryParams).put(Success.class);
 	}
@@ -188,7 +191,7 @@ public class BioPortalClient {
 	public static void main(String[] args) throws Exception {
 		String url = "http://rest.bioontology.org/bioportal/";
 		String userId = "40522";
-		String apiKey = "b5ca12b0-23f8-4627-be61-1e045cf73a7d";
+		String apiKey = null;
 		BioPortalClient bioPortalClient = new BioPortalClient(url, userId, apiKey);	
 		
 		/*String[] ids = new String[] { 
@@ -203,10 +206,36 @@ public class BioPortalClient {
 		
 		//for(int i=0; i<56; i++) {
 			Filter filter = new Filter();
-			filter.setSubmittedBy(userId);
+			//filter.setSubmittedBy(userId);
 			//filter.setPageSize("279");
 			//filter.setPageNum(String.valueOf(i));
-			Success success = bioPortalClient.getProvisionalTerms(filter);
+			filter.setImplementedTermsOnly("true");
+			Success success = bioPortalClient.getProvisionalTerm("http://purl.bioontology.org/ontology/provisional/f23389af-5b3d-4903-8eab-9d8db427bcb9");
+			
+			List<Object> fullIdOrIdOrLabels = success.getData().getClassBean().getFullIdOrIdOrLabel();
+			for(Object fullIdOrIdOrLabel : fullIdOrIdOrLabels) {
+				if(fullIdOrIdOrLabel instanceof Relations) {
+					Relations relations = (Relations)fullIdOrIdOrLabel;
+					List<Entry> entries = relations.getEntry();
+					for(Entry entry : entries) {
+						List<Object> objects = entry.getStringOrList();
+						if(objects.get(0).equals("provisionalPermanentId")) {
+							System.out.println("this is the permanent id " + objects.get(1));
+						}
+					}
+				}
+			}
+			
+			
+			//System.out.println(success.getData());
+			//System.out.println(success.getData().getClassBean());
+			//System.out.println(success.getData().getList());
+			
+			
+			
+			//System.out.println("-----------------done-------------------");
+			//System.out.println(success.getData().getList());
+			//System.out.println(success.getData().getClassBean());
 		//}
 		
 		/*System.out.println("Provide a new term: ");

@@ -1,5 +1,7 @@
 package ui.action;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
@@ -20,6 +22,14 @@ public class MenuAction extends ActionSupport {
 	private Map<String, String> termAdoptions;
 	private int numberOfTermAdoptions;
 	private ProvisionalTerm provisionalTerm;
+	private List<String> ontologies;
+	
+	public MenuAction() {
+		ontologies = new ArrayList<String>();
+		ontologies.add("PATO");
+		ontologies.add("PO");
+		ontologies.add("HAO");
+	}
 	
 	public String execute() {
 		switch(action) {
@@ -97,6 +107,15 @@ public class MenuAction extends ActionSupport {
 	public void setProvisionalTerm(ProvisionalTerm provisionalTerm) {
 		this.provisionalTerm = provisionalTerm;
 	}
+
+	public List<String> getOntologies() {
+		return ontologies;
+	}
+
+	public void setOntologies(List<String> ontologies) {
+		this.ontologies = ontologies;
+	}
+	
 	
 	
 }

@@ -1,5 +1,8 @@
 package ui.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ui.db.UnadoptedTermDAO;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.db.ProvisionalTermDAO;
@@ -11,6 +14,14 @@ public class ProvisionalTermAction extends ActionSupport {
 	private ProvisionalTerm provisionalTerm;
 	private String localId;
 	private String action;
+	private List<String> ontologies;
+	
+	public ProvisionalTermAction() {
+		ontologies = new ArrayList<String>();
+		ontologies.add("PATO");
+		ontologies.add("PO");
+		ontologies.add("HAO");
+	}
 	
 	public String execute() {
 		//here i would load the extra info from the database as far it is available already e.g. source;
@@ -56,6 +67,14 @@ public class ProvisionalTermAction extends ActionSupport {
 
 	public void setAction(String action) {
 		this.action = action;
+	}
+
+	public List<String> getOntologies() {
+		return ontologies;
+	}
+
+	public void setOntologies(List<String> ontologies) {
+		this.ontologies = ontologies;
 	}	
 	
 	
