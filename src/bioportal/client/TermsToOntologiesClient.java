@@ -10,12 +10,12 @@ import javax.xml.bind.JAXBElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ui.db.UnadoptedTermDAO;
-
 import bioportal.db.ProvisionalTermDAO;
 
 import bioportal.beans.Filter;
 import bioportal.beans.ProvisionalTerm;
+import bioportal.beans.response.Entry;
+import bioportal.beans.response.Relations;
 import bioportal.beans.response.Success;
 
 public class TermsToOntologiesClient {
@@ -55,16 +55,29 @@ public class TermsToOntologiesClient {
 		Map<String, String> result = new HashMap<String, String>();
 		List<ProvisionalTerm> allProvisionalTermsAwaitingAdoption = ProvisionalTermDAO.getInstance().getAllAwaitingAdoption();
 		for(ProvisionalTerm provisionalTerm : allProvisionalTermsAwaitingAdoption) {
+			String permanentId = null;
 			Success success = bioPortalClient.getProvisionalTerm(provisionalTerm.getTemporaryid());
-			String permanentId = getIdFromSuccessfulCreate(success, "id");
-			String temporaryId = getIdFromSuccessfulCreate(success, "fullId");
-			if(permanentId.equals(temporaryId))
+			List<Object> fullIdOrIdOrLabels = success.getData().getClassBean().getFullIdOrIdOrLabel();
+			for(Object fullIdOrIdOrLabel : fullIdOrIdOrLabels) {
+				if(fullIdOrIdOrLabel instanceof Relations) {
+					Relations relations = (Relations)fullIdOrIdOrLabel;
+					List<Entry> entries = relations.getEntry();
+					for(Entry entry : entries) {
+						List<Object> objects = entry.getStringOrList();
+						if(objects.get(0).equals("provisionalPermanentId")) {
+							permanentId = (String)objects.get(1);
+						}
+					}
+				}
+			}
+			
+			if(permanentId == null)
 				continue;
 			else {
 				provisionalTerm.setPermanentid(permanentId);
 				ProvisionalTermDAO.getInstance().deleteAwaitingAdoption(provisionalTerm);
 				ProvisionalTermDAO.getInstance().storeAdopted(provisionalTerm);
-				result.put(temporaryId, permanentId);
+				result.put(provisionalTerm.getTemporaryid(), permanentId);
 			}
 		}
 		return result;
