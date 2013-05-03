@@ -39,7 +39,7 @@ public class ProvisionalTerm {
 	}
 
 	public boolean hasLocalId() {
-		return this.localId != null;
+		return this.localId != null && !this.localId.isEmpty();
 	}
 	
 	public String getLocalId() {
@@ -51,7 +51,7 @@ public class ProvisionalTerm {
 	}
 	
 	public boolean hasCategory() {
-		return this.category != null;
+		return this.category != null && !this.category.isEmpty();
 	}
 
 	public String getCategory() {
@@ -71,7 +71,7 @@ public class ProvisionalTerm {
 	}
 
 	public String getSuperclass() {
-		return superclass.replace("http://purl.obolibrary.org/obo/", "");
+		return superclass;
 	}
 
 	public void setSuperclass(String superclass) {
@@ -119,27 +119,27 @@ public class ProvisionalTerm {
 	}
 	
 	public boolean hasPermanentId() {
-		return this.permanentid != null;
+		return this.permanentid != null && !this.permanentid.isEmpty();
 	}
 	
 	public boolean hasSuperClass() {
-		return this.superclass != null;
+		return this.superclass != null && !this.superclass.isEmpty();
 	}
 	
 	public boolean hasSubmittedBy() {
-		return this.submittedby != null;
+		return this.submittedby != null && !this.submittedby.isEmpty();
 	}
 	
 	public boolean hasDefinition() {
-		return this.definition != null;
+		return this.definition != null && !this.definition.isEmpty();
 	}
 	
 	public boolean hasOntologyIds() {
-		return this.ontologyids != null;
+		return this.ontologyids != null && !this.ontologyids.isEmpty();
 	}
 	
 	public boolean hasTerm() {
-		return this.term != null;
+		return this.term != null && !this.term.isEmpty();
 	}
 
 	public String getSynonyms() {
@@ -147,15 +147,15 @@ public class ProvisionalTerm {
 	}
 	
 	public boolean hasSource() {
-		return this.source != null;
+		return this.source != null && !this.source.isEmpty();
 	}
 	
 	public boolean hasSynonyms() {
-		return this.synonyms != null;
+		return this.synonyms != null && !this.synonyms.isEmpty();
 	}
 	
 	public boolean hasTemporaryId() {
-		return this.temporaryid != null;
+		return this.temporaryid != null && !this.temporaryid.isEmpty();
 	}
 
 	public String getTemporaryid() {

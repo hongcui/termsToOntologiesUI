@@ -22,8 +22,6 @@ public class ProvisionalTermDeleteAction extends ActionSupport {
 	
 	public String execute() {
 		try {
-			System.out.println("delete ");
-			System.out.println(provisionalTerm.toString());
 			TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient();
 			termsToOntologiesClient.deleteTerm(provisionalTerm);
 			provisionalTerm = null;

@@ -8,6 +8,7 @@
 		<s:hidden name="provisionalTerm.localId" />
 		<s:hidden name="provisionalTerm.category" />
 		<s:hidden name="provisionalTerm.temporaryid" />
+		<s:hidden name="provisionalTerm.source" />
 		<s:textfield name="provisionalTerm.term" key="term"/>
         <s:textfield name="provisionalTerm.definition" key="definition"/>    
          <s:textfield name="provisionalTerm.synonyms" key="synonyms"/>
@@ -26,6 +27,7 @@
 		<s:hidden name="provisionalTerm.localId" />
 		<s:hidden name="provisionalTerm.category" />
 		<s:hidden name="provisionalTerm.temporaryid" />
+		<s:hidden name="provisionalTerm.source" />
 		<s:textfield name="provisionalTerm.term" key="term"/>
         <s:textfield name="provisionalTerm.definition" key="definition"/>    
          <s:textfield name="provisionalTerm.synonyms" key="synonyms"/>

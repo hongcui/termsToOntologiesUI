@@ -97,6 +97,7 @@ public class TermsToOntologiesClient {
 	}
 
 	public void updateTerm(ProvisionalTerm provisionalTerm) throws Exception {
+		System.out.println("update the term " + provisionalTerm.toString());
 		bioPortalClient.updateProvisionalTerm(provisionalTerm.getTemporaryid(), provisionalTerm);
 		ProvisionalTermDAO.getInstance().updateAwaitingAdoption(provisionalTerm);
 	}

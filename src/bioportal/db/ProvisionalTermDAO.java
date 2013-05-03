@@ -194,15 +194,7 @@ public class ProvisionalTermDAO extends AbstractDAO {
 	}
 
 	public void updateAwaitingAdoption(ProvisionalTerm provisionalTerm) throws SQLException {
-		this.openConnection();
-		System.out.println("UPDATE bioportal_awaitingadoption " +
-				"SET preferredName='" + provisionalTerm.getTerm() + "'," +
-				" definition='" + provisionalTerm.getDefinition() + "'," +
-				" superClass='" + provisionalTerm.getSuperclass() + "'," +
-				" synonyms='" + provisionalTerm.getSynonyms() + "'," +
-				" ontologyIds='" + provisionalTerm.getOntologyids() + "'," +
-				" source='" + provisionalTerm.getSource() + "' WHERE localId='" + provisionalTerm.getLocalId());
-		
+		this.openConnection();		
 		PreparedStatement preparedStatement = this.prepareStatement("UPDATE bioportal_awaitingadoption SET " +
 				"preferredName = ?, definition = ?, superClass = ?, synonyms = ?, ontologyIds = ?, source = ? WHERE localId = ?");
 		preparedStatement.setString(1, provisionalTerm.getTerm());

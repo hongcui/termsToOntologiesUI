@@ -168,6 +168,8 @@ public class BioPortalClient {
 	    	queryParams.add("permanentid", provisionalTerm.getPermanentid());
 	    if(provisionalTerm.hasSuperClass())
 	    	queryParams.add("superclass", superclassPrefix + provisionalTerm.getSuperclass());
+	    if(provisionalTerm.hasSynonyms())
+	    	queryParams.add("synonyms", provisionalTerm.getSynonyms());
 	    
 	    return webResource.queryParams(queryParams).put(Success.class);
 	}
@@ -195,9 +197,9 @@ public class BioPortalClient {
 		BioPortalClient bioPortalClient = new BioPortalClient(url, userId, apiKey);	
 		
 		/*String[] ids = new String[] { 
-				"http://purl.bioontology.org/ontology/provisional/4170d1ac-c756-4501-a9cc-5306e4f18ee9",
-				"http://purl.bioontology.org/ontology/provisional/afff797b-762c-4f0f-9d55-1f42d88bf3d1",
-				"http://purl.bioontology.org/ontology/provisional/e4552207-4b14-450c-832a-dfcbc989c099" };
+				"http://purl.bioontology.org/ontology/provisional/2f989b52-081d-48f4-98fe-7327cb8bd661" };
+				"http://purl.bioontology.org/ontology/provisional/9bc340f0-eecb-49ce-85f8-416867928e28",
+				"http://purl.bioontology.org/ontology/provisional/578f3f37-0f47-4c89-9d82-e4ef83ce348c" }; 
 				
 		for(String id : ids) {
 			bioPortalClient.deleteProvisionalTerm(id);
@@ -206,32 +208,11 @@ public class BioPortalClient {
 		
 		//for(int i=0; i<56; i++) {
 			Filter filter = new Filter();
-			//filter.setSubmittedBy(userId);
+			filter.setSubmittedBy(userId);
 			//filter.setPageSize("279");
 			//filter.setPageNum(String.valueOf(i));
-			filter.setImplementedTermsOnly("true");
-			Success success = bioPortalClient.getProvisionalTerm("http://purl.bioontology.org/ontology/provisional/f23389af-5b3d-4903-8eab-9d8db427bcb9");
-			
-			List<Object> fullIdOrIdOrLabels = success.getData().getClassBean().getFullIdOrIdOrLabel();
-			for(Object fullIdOrIdOrLabel : fullIdOrIdOrLabels) {
-				if(fullIdOrIdOrLabel instanceof Relations) {
-					Relations relations = (Relations)fullIdOrIdOrLabel;
-					List<Entry> entries = relations.getEntry();
-					for(Entry entry : entries) {
-						List<Object> objects = entry.getStringOrList();
-						if(objects.get(0).equals("provisionalPermanentId")) {
-							System.out.println("this is the permanent id " + objects.get(1));
-						}
-					}
-				}
-			}
-			
-			
-			//System.out.println(success.getData());
-			//System.out.println(success.getData().getClassBean());
-			//System.out.println(success.getData().getList());
-			
-			
+			//filter.setImplementedTermsOnly("true");
+			Success success = bioPortalClient.getProvisionalTerms(filter);
 			
 			//System.out.println("-----------------done-------------------");
 			//System.out.println(success.getData().getList());
