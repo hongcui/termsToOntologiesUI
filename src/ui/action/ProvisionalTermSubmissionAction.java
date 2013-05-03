@@ -3,6 +3,9 @@ package ui.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import bioportal.OntologyMapper;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.client.TermsToOntologiesClient;
@@ -14,6 +17,7 @@ public class ProvisionalTermSubmissionAction extends ActionSupport {
 	private ProvisionalTerm provisionalTerm;
 	private String action = "send";
 	private List<String> ontologies = new ArrayList<String>();
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public ProvisionalTermSubmissionAction() {
 		ontologies = OntologyMapper.getInstance().getOntologies();
@@ -24,7 +28,7 @@ public class ProvisionalTermSubmissionAction extends ActionSupport {
 			TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient();
 			termsToOntologiesClient.sendTerm(provisionalTerm);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return ERROR;
 		}
 	

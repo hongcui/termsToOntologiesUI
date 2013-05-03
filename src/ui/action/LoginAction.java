@@ -1,6 +1,8 @@
 package ui.action;
 
 import org.apache.struts2.ServletActionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ui.beans.User;
 import ui.db.UserDAO;
@@ -14,6 +16,7 @@ public class LoginAction extends ActionSupport {
 	private String username;
 	private String password;
 	private static final String USER_HANDLE = "loggedInUser";
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public String execute() {
 		try {
@@ -22,7 +25,7 @@ public class LoginAction extends ActionSupport {
 				return SUCCESS;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		addActionError(getText("error.login"));		
 		return ERROR;

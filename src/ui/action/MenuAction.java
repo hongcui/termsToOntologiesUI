@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ui.db.UnadoptedTermDAO;
 
 import bioportal.OntologyMapper;
@@ -20,6 +23,7 @@ public class MenuAction extends ActionSupport {
 	private int numberOfTermAdoptions;
 	private ProvisionalTerm provisionalTerm;
 	private List<String> ontologies = new ArrayList<String>();
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public MenuAction() {
 		ontologies = OntologyMapper.getInstance().getOntologies();
@@ -31,7 +35,7 @@ public class MenuAction extends ActionSupport {
 			try {
 				provisionalTerm = UnadoptedTermDAO.getInstance().getFirstUnadoptedTerm();
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
 				return ERROR;
 			}
 			return action;
@@ -41,7 +45,7 @@ public class MenuAction extends ActionSupport {
 				if(provisionalTerm==null)
 					return "empty";
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
 				return ERROR;
 			}
 			return action;
@@ -51,7 +55,7 @@ public class MenuAction extends ActionSupport {
 				if(provisionalTerm==null)
 					return "empty";
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
 				return ERROR;
 			}
 			return action;
@@ -61,7 +65,7 @@ public class MenuAction extends ActionSupport {
 				termAdoptions = termsToOntologiesClient.checkTermAdoptions();
 				numberOfTermAdoptions = termAdoptions.size();
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
 				return ERROR;
 			}
 			return action;

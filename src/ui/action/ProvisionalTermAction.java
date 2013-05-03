@@ -3,6 +3,9 @@ package ui.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ui.db.UnadoptedTermDAO;
 import bioportal.OntologyMapper;
 import bioportal.beans.ProvisionalTerm;
@@ -16,6 +19,7 @@ public class ProvisionalTermAction extends ActionSupport {
 	private String localId;
 	private String action;
 	private List<String> ontologies = new ArrayList<String>();
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public ProvisionalTermAction() {
 		ontologies = OntologyMapper.getInstance().getOntologies();
@@ -38,7 +42,7 @@ public class ProvisionalTermAction extends ActionSupport {
 				return ERROR;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return ERROR;
 		}
 	}

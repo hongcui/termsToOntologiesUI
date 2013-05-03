@@ -21,7 +21,6 @@ import bioportal.beans.response.Success;
 public class TermsToOntologiesClient {
 
 	private BioPortalClient bioPortalClient;
-	private Logger logger;
 	
 	public TermsToOntologiesClient() throws Exception {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -31,7 +30,6 @@ public class TermsToOntologiesClient {
 		String userId = properties.getProperty("bioportalUserId");
 		String apiKey = properties.getProperty("bioportalApiKey");
 		bioPortalClient = new BioPortalClient(url, userId, apiKey);	
-		logger =  LoggerFactory.getLogger(this.getClass());
 	}
 	
 	/**
@@ -97,7 +95,6 @@ public class TermsToOntologiesClient {
 	}
 
 	public void updateTerm(ProvisionalTerm provisionalTerm) throws Exception {
-		System.out.println("update the term " + provisionalTerm.toString());
 		bioPortalClient.updateProvisionalTerm(provisionalTerm.getTemporaryid(), provisionalTerm);
 		ProvisionalTermDAO.getInstance().updateAwaitingAdoption(provisionalTerm);
 	}

@@ -7,6 +7,9 @@ import java.sql.SQLException;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import db.AbstractDAO;
 
 import ui.beans.User;
@@ -15,6 +18,7 @@ import ui.beans.User;
 public class UserDAO extends AbstractDAO {
 
 	private static UserDAO instance;
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public static UserDAO getInstance() throws Exception {
 		if(instance == null)
@@ -67,7 +71,7 @@ public class UserDAO extends AbstractDAO {
 			User dbUser = this.getUser(user.getName());
 			return dbUser.getPassword().equals(this.getEncryptedPassword(user.getPassword()));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return false;
 	}

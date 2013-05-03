@@ -3,6 +3,9 @@ package ui.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import bioportal.OntologyMapper;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.client.TermsToOntologiesClient;
@@ -15,6 +18,7 @@ public class ProvisionalTermDeleteAction extends ActionSupport {
 	private ProvisionalTerm provisionalTerm;
 	private String action = "update";
 	private List<String> ontologies = new ArrayList<String>();
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public ProvisionalTermDeleteAction() {
 		ontologies = OntologyMapper.getInstance().getOntologies();
@@ -28,7 +32,7 @@ public class ProvisionalTermDeleteAction extends ActionSupport {
 			if(ProvisionalTermDAO.getInstance().getFirstAwaitingTerm() == null)
 				return "empty";
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return ERROR;
 		}
 	
