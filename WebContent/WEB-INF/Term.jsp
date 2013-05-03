@@ -10,11 +10,11 @@
 		<s:hidden name="provisionalTerm.temporaryid" />
 		<s:textfield name="provisionalTerm.term" key="term"/>
         <s:textfield name="provisionalTerm.definition" key="definition"/>    
-        <s:textfield name="provisionalTerm.source" key="source"/>
-        <s:select key="ontology" headerKey="0" headerValue="" list="ontologies" name="provisionalTerm.ontology"
+         <s:textfield name="provisionalTerm.synonyms" key="synonyms"/>
+         <s:select key="ontology" headerKey="0" headerValue="" list="ontologies" name="provisionalTerm.ontology"
         	onChange="redirectIFrame(this);" />    
         <s:textfield id="superclass" name="provisionalTerm.superclass" key="superclass"/>
-        <s:textfield name="provisionalTerm.synonyms" key="synonyms"/>    
+        <s:label name="provisionalTerm.source" key="source"/>
 	<s:submit method="submitprovisionalTerm" key="label.send.term" align="center" />
 </s:form>
 </s:if>
@@ -26,13 +26,13 @@
 		<s:hidden name="provisionalTerm.localId" />
 		<s:hidden name="provisionalTerm.category" />
 		<s:hidden name="provisionalTerm.temporaryid" />
-		<s:textfield name="provisionalTerm.term" label="term"/>
-        <s:textfield name="provisionalTerm.definition" label="definition"/>    
-        <s:textfield name="provisionalTerm.source" label="source"/>
-        <s:select key="ontology" headerKey="0" headerValue="" list="ontologies" name="provisionalTerm.ontology"
+		<s:textfield name="provisionalTerm.term" key="term"/>
+        <s:textfield name="provisionalTerm.definition" key="definition"/>    
+         <s:textfield name="provisionalTerm.synonyms" key="synonyms"/>
+         <s:select key="ontology" headerKey="0" headerValue="" list="ontologies" name="provisionalTerm.ontology"
         	onChange="redirectIFrame(this);" />    
-        <s:textfield id="superclass" name="provisionalTerm.superclass" label="superclass"/>
-        <s:textfield name="provisionalTerm.synonyms" label="synonyms"/>     
+        <s:textfield id="superclass" name="provisionalTerm.superclass" key="superclass"/>
+        <s:label name="provisionalTerm.source" key="source"/>
 	<s:submit method="updateprovisionalTerm" key="label.update.term" align="center" />
 </s:form>
 <s:form action="provisionalTermDelete" method="post" validate="true">
