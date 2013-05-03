@@ -64,7 +64,7 @@ public class TermsToOntologiesClient {
 					List<Entry> entries = relations.getEntry();
 					for(Entry entry : entries) {
 						List<Object> objects = entry.getStringOrList();
-						if(objects.get(0).equals("provisionalPermanentId")) {
+						if(objects.size() >= 2 && objects.get(0).equals("provisionalPermanentId")) {
 							permanentId = (String)objects.get(1);
 						}
 					}

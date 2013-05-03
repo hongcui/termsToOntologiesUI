@@ -29,8 +29,6 @@ public class ProvisionalTermDAO extends AbstractDAO {
 
 	public void addAwaitingAdoption(ProvisionalTerm provisionalTerm) throws SQLException {
 		this.openConnection();
-		System.out.println("this is what i store");
-		System.out.println(provisionalTerm.toString());
 		this.storeProvisionalTerm("awaitingadoption", provisionalTerm);		
 		this.closeConnection();
 	}

@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts2.ServletActionContext;
-
-import ui.beans.User;
 import ui.db.UnadoptedTermDAO;
-import ui.db.UserDAO;
 
+import bioportal.OntologyMapper;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.client.TermsToOntologiesClient;
 import bioportal.db.ProvisionalTermDAO;
@@ -22,13 +19,10 @@ public class MenuAction extends ActionSupport {
 	private Map<String, String> termAdoptions;
 	private int numberOfTermAdoptions;
 	private ProvisionalTerm provisionalTerm;
-	private List<String> ontologies;
+	private List<String> ontologies = new ArrayList<String>();
 	
 	public MenuAction() {
-		ontologies = new ArrayList<String>();
-		ontologies.add("PATO");
-		ontologies.add("PO");
-		ontologies.add("HAO");
+		ontologies = OntologyMapper.getInstance().getOntologies();
 	}
 	
 	public String execute() {
@@ -115,7 +109,4 @@ public class MenuAction extends ActionSupport {
 	public void setOntologies(List<String> ontologies) {
 		this.ontologies = ontologies;
 	}
-	
-	
-	
 }

@@ -1,5 +1,10 @@
 package bioportal.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import bioportal.OntologyMapper;
+
 public class ProvisionalTerm {
 
 	private String localId;
@@ -89,6 +94,14 @@ public class ProvisionalTerm {
 		this.definition = definition;
 	}
 
+	public String getOntology() {
+		return OntologyMapper.getInstance().getOntology(ontologyids);
+	}
+	
+	public void setOntology(String ontology) {
+		this.ontologyids = OntologyMapper.getInstance().getOntologyId(ontology);
+	}
+	
 	public String getOntologyids() {
 		return ontologyids;
 	}

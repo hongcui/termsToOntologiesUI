@@ -1,5 +1,9 @@
 package ui.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import bioportal.OntologyMapper;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.client.TermsToOntologiesClient;
 
@@ -9,10 +13,13 @@ public class ProvisionalTermSubmissionAction extends ActionSupport {
 
 	private ProvisionalTerm provisionalTerm;
 	private String action = "send";
+	private List<String> ontologies = new ArrayList<String>();
+	
+	public ProvisionalTermSubmissionAction() {
+		ontologies = OntologyMapper.getInstance().getOntologies();
+	}
 	
 	public String execute() {
-		System.out.println("this is the provisional term is execute upon");
-		System.out.println(provisionalTerm.toString());
 		try {
 			TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient();
 			termsToOntologiesClient.sendTerm(provisionalTerm);
@@ -29,7 +36,6 @@ public class ProvisionalTermSubmissionAction extends ActionSupport {
 	}
 
 	public void setProvisionalTerm(ProvisionalTerm provisionalTerm) {
-		System.out.println("called set");
 		this.provisionalTerm = provisionalTerm;
 	}
 
@@ -41,5 +47,11 @@ public class ProvisionalTermSubmissionAction extends ActionSupport {
 		this.action = action;
 	}
 	
-	
+	public List<String> getOntologies() {
+		return ontologies;
+	}
+
+	public void setOntologies(List<String> ontologies) {
+		this.ontologies = ontologies;
+	}
 }
