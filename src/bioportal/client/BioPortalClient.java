@@ -1,5 +1,6 @@
 package bioportal.client;
 import java.util.List;
+import java.util.Properties;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -191,19 +192,39 @@ public class BioPortalClient {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String url = "http://rest.bioontology.org/bioportal/";
-		String userId = "40522";
-		String apiKey = null;
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		Properties properties = new Properties(); 
+		properties.load(loader.getResourceAsStream("config.properties"));
+		String url = properties.getProperty("bioportalUrl");
+		String userId = properties.getProperty("bioportalUserId");
+		String apiKey = properties.getProperty("bioportalApiKey");
 		BioPortalClient bioPortalClient = new BioPortalClient(url, userId, apiKey);	
 		
-		/*String[] ids = new String[] { 
-				"http://purl.bioontology.org/ontology/provisional/2f989b52-081d-48f4-98fe-7327cb8bd661" };
-				"http://purl.bioontology.org/ontology/provisional/9bc340f0-eecb-49ce-85f8-416867928e28",
-				"http://purl.bioontology.org/ontology/provisional/578f3f37-0f47-4c89-9d82-e4ef83ce348c" }; 
+		String[] ids = new String[] { 
+				"http://purl.bioontology.org/ontology/provisional/50cf20bc-6ce5-4992-aa08-8fbfa3ad5925",
+				"http://purl.bioontology.org/ontology/provisional/7117c00c-88d9-457f-a39d-cf93b18564c8",
+				"http://purl.bioontology.org/ontology/provisional/36776c5f-51fe-403c-9f76-1b440185a6c2",
+				"http://purl.bioontology.org/ontology/provisional/61f9feab-8e50-408b-a48a-64a9dd0376df",
+				"http://purl.bioontology.org/ontology/provisional/a4fc6aec-fe2e-4cd1-8e37-7d2f7dcbb842",
+				"http://purl.bioontology.org/ontology/provisional/ebe43aeb-b79a-43d6-8581-ee770a80393b",
+				"http://purl.bioontology.org/ontology/provisional/524e317b-bf03-4b4d-823f-172be7263d18",
+				"http://purl.bioontology.org/ontology/provisional/7de65602-fb2d-4201-bfe7-1727c725b26a",
+				"http://purl.bioontology.org/ontology/provisional/b9d70adf-d2d2-4144-b02d-7359b5409a26",
+				"http://purl.bioontology.org/ontology/provisional/ea9b4ddf-eb2d-4f64-8bf1-a2f4324f8268",
+				"http://purl.bioontology.org/ontology/provisional/51f6ccba-23f5-4220-b5c9-9d8462ac732f",
+				"http://purl.bioontology.org/ontology/provisional/301d2180-1cf2-4f9f-b5e0-15318b5e741f",
+				"http://purl.bioontology.org/ontology/provisional/f54beb20-30b9-48ea-a030-309125d2995b",
+				"http://purl.bioontology.org/ontology/provisional/cb3d0fa2-2464-4884-83cc-b92b92f1745a",
+				"http://purl.bioontology.org/ontology/provisional/4a8fa284-b3c8-4418-b7f7-634f58cb43b5",
+				"http://purl.bioontology.org/ontology/provisional/a333d709-f724-48f2-b56a-fb4503d87beb",
+				"http://purl.bioontology.org/ontology/provisional/d3267598-ca34-4d9b-a0bc-f0ae5fbbc328",
+				"http://purl.bioontology.org/ontology/provisional/033daa88-e03e-4ed8-bf2c-fc33f81800eb",
+				"http://purl.bioontology.org/ontology/provisional/cbb1e6db-7d2d-4bd8-93ae-4563cd3150e4"
+			}; 
 				
 		for(String id : ids) {
 			bioPortalClient.deleteProvisionalTerm(id);
-		}*/
+		}
 		
 		
 		//for(int i=0; i<56; i++) {

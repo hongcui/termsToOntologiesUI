@@ -105,9 +105,12 @@ public class TermsToOntologiesClient {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String url = "http://rest.bioontology.org/bioportal/";
-		String userId = "40522";
-		String apiKey = "b5ca12b0-23f8-4627-be61-1e045cf73a7d";
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		Properties properties = new Properties(); 
+		properties.load(loader.getResourceAsStream("config.properties"));
+		String url = properties.getProperty("bioportalUrl");
+		String userId = properties.getProperty("bioportalUserId");
+		String apiKey = properties.getProperty("bioportalApiKey");
 		BioPortalClient bioPortalClient = new BioPortalClient(url, userId, apiKey);	
 		
 		for(int i=0; i<12; i++) {
