@@ -7,9 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import db.AbstractDAO;
-
 import bioportal.beans.ProvisionalTerm;
+import db.AbstractDAO;
 
 public class UnadoptedTermDAO extends AbstractDAO implements IUnadoptedTermDAO {
 

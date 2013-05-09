@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +18,14 @@ import bioportal.db.ProvisionalTermDAO;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ProvisionalTermAction extends ActionSupport {
+public class ProvisionalTermAction extends ActionSupport implements SessionAware {
 
 	private ProvisionalTerm provisionalTerm;
 	private String localId;
 	private String action;
 	private List<String> ontologies = new ArrayList<String>();
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Map<String, Object> sessionMap;
 	
 	public ProvisionalTermAction() {
 		ontologies = OntologyMapper.getInstance().getOntologies();
@@ -90,5 +93,10 @@ public class ProvisionalTermAction extends ActionSupport {
 
 	public void setOntologies(List<String> ontologies) {
 		this.ontologies = ontologies;
+	}
+
+	@Override
+	public void setSession(Map<String, Object> sessionMap) {
+		this.sessionMap = sessionMap;
 	}
 }

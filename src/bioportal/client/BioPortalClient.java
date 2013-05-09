@@ -7,7 +7,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBException;
 
-
 import bioportal.beans.Filter;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.beans.response.Success;

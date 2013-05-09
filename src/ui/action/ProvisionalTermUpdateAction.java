@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,12 +19,13 @@ import bioportal.client.TermsToOntologiesClient;
 import com.opensymphony.xwork2.ActionSupport;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-public class ProvisionalTermUpdateAction extends ActionSupport {
+public class ProvisionalTermUpdateAction extends ActionSupport implements SessionAware {
 
 	private ProvisionalTerm provisionalTerm;
 	private String action = "update";
 	private List<String> ontologies = new ArrayList<String>();
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Map<String, Object> sessionMap;
 	
 	public ProvisionalTermUpdateAction() {
 		ontologies = OntologyMapper.getInstance().getOntologies();
@@ -30,7 +33,9 @@ public class ProvisionalTermUpdateAction extends ActionSupport {
 	
 	public String execute() {
 		try {
-			TermsToOntologiesClient termsToOntologiesClient = TermsToOntologiesClient.getInstance();
+			TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient(
+					(String)sessionMap.get(SessionVariables.BIOPORTAL_USER_ID.toString()), 
+					(String)sessionMap.get(SessionVariables.BIOPORTAL_API_KEY.toString()));
 			termsToOntologiesClient.updateTerm(provisionalTerm);
 			addActionMessage(getText("success.update"));
 		} catch (SQLException e) {
@@ -84,5 +89,10 @@ public class ProvisionalTermUpdateAction extends ActionSupport {
 
 	public void setOntologies(List<String> ontologies) {
 		this.ontologies = ontologies;
+	}
+
+	@Override
+	public void setSession(Map<String, Object> sessionMap) {
+		this.sessionMap = sessionMap;
 	}
 }

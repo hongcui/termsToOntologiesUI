@@ -13,9 +13,8 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import db.AbstractDAO;
-
 import ui.beans.User;
+import db.AbstractDAO;
 
 
 public class UserDAO extends AbstractDAO {
@@ -38,7 +37,8 @@ public class UserDAO extends AbstractDAO {
 	public void addUser(User user) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		user.setPassword(getEncryptedPassword(user.getPassword()));
 		this.openConnection();
-		String sql = "INSERT INTO ui_users (name, password) VALUES ('" + user.getName() + "','" + user.getPassword() + "')";
+		String sql = "INSERT INTO ui_users (name, password, bioportalUserId, bioportalAPIKey) " +
+				"VALUES ('" + user.getName() + "','" + user.getPassword() + "', '" + user.getBioPortalUserId() + "','" + user.getBioPortalAPIKey() +"')";
 		PreparedStatement preparedStatement = this.executeSQL(sql);
 		this.closeConnection();
 	}
@@ -55,6 +55,8 @@ public class UserDAO extends AbstractDAO {
 		this.executeSQL("CREATE TABLE IF NOT EXISTS `ui_users` (" +
 				"`name` varchar(20) NOT NULL, " +
 				"`password` char(64) NOT NULL, " +
+				"`bioportalUserId` varchar(100) NOT NULL, " +
+				"`bioportalAPIKey` varchar(100) NOT NULL, " +
 				"PRIMARY KEY (`name`))");
 	}
 	
@@ -64,7 +66,8 @@ public class UserDAO extends AbstractDAO {
 		PreparedStatement preparedStatement = this.executeSQL(sql);
 		ResultSet resultSet = preparedStatement.getResultSet();
 		resultSet.next();
-		User user = new User(resultSet.getString("name"), resultSet.getString("password"));
+		User user = new User(resultSet.getString("name"), resultSet.getString("password"), resultSet.getString("bioportalUserId"), 
+				resultSet.getString("bioportalAPIKey"));
 		this.closeConnection();
 		return user;
 	}

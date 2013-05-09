@@ -10,36 +10,34 @@ import java.util.Properties;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import bioportal.db.ProvisionalTermDAO;
-
 import bioportal.beans.Filter;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.beans.response.Entry;
 import bioportal.beans.response.Relations;
 import bioportal.beans.response.Success;
+import bioportal.db.ProvisionalTermDAO;
 
 public class TermsToOntologiesClient {
 
 	private BioPortalClient bioPortalClient;
-	private static TermsToOntologiesClient instance;
+	private String bioportalUserId;
+	/*private static TermsToOntologiesClient instance;
 	
 	public static TermsToOntologiesClient getInstance() throws IOException {
 		if(instance == null)
 			instance = new TermsToOntologiesClient();
 		return instance;
-	}
+	}*/
 	
-	private TermsToOntologiesClient() throws IOException {
+	public TermsToOntologiesClient(String bioportalUserId, String bioportalAPIKey) throws IOException {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties(); 
 		properties.load(loader.getResourceAsStream("config.properties"));
 		String url = properties.getProperty("bioportalUrl");
-		String userId = properties.getProperty("bioportalUserId");
-		String apiKey = properties.getProperty("bioportalApiKey");
-		bioPortalClient = new BioPortalClient(url, userId, apiKey);	
+		//String userId = properties.getProperty("bioportalUserId");
+		//String apiKey = properties.getProperty("bioportalApiKey");
+		this.bioportalUserId = bioportalUserId;
+		bioPortalClient = new BioPortalClient(url, bioportalUserId, bioportalAPIKey);	
 	}
 	
 	/**
@@ -54,6 +52,7 @@ public class TermsToOntologiesClient {
 		Success success = bioPortalClient.createProvisionalTerm(provisionalTerm);
 		String temporaryId = getIdFromSuccessfulCreate(success, "id");
 		provisionalTerm.setTemporaryid(temporaryId);
+		provisionalTerm.setSubmittedby(bioportalUserId);
 		ProvisionalTermDAO.getInstance().addAwaitingAdoption(provisionalTerm);
 		return temporaryId;
 	}
@@ -136,7 +135,7 @@ public class TermsToOntologiesClient {
 			filter.setSubmittedBy(userId);
 			Success success = bioPortalClient.getProvisionalTerms(filter);
 			
-			TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient();
+			TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient(userId, apiKey);
 			String id = termsToOntologiesClient.getIdFromSuccessfulCreate(success, "id");
 			bioPortalClient.deleteProvisionalTerm(id);
 		}

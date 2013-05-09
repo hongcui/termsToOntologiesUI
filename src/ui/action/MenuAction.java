@@ -8,12 +8,12 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ui.db.IUnadoptedTermDAO;
 import ui.db.UnadoptedTermDAO;
-
 import bioportal.OntologyMapper;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.client.TermsToOntologiesClient;
@@ -21,7 +21,7 @@ import bioportal.db.ProvisionalTermDAO;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class MenuAction extends ActionSupport {
+public class MenuAction extends ActionSupport implements SessionAware {
 
 	private String action;
 	private Map<String, String> termAdoptions;
@@ -29,17 +29,18 @@ public class MenuAction extends ActionSupport {
 	private ProvisionalTerm provisionalTerm;
 	private List<String> ontologies = new ArrayList<String>();
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Map<String, Object> sessionMap;
 	
 	public MenuAction() {
 		ontologies = OntologyMapper.getInstance().getOntologies();
 	}
 	
-	public String execute() {
+	public String execute() {		
 		switch(action) {
 		case "send":
 			try {
 				IUnadoptedTermDAO unadoptedTermDAO = UnadoptedTermDAO.getInstance();
-				provisionalTerm = unadoptedTermDAO.getFirstUnadoptedTerm();				
+				provisionalTerm = unadoptedTermDAO.getFirstUnadoptedTerm();			
 			} catch (SQLException e) {
 				logger.error(e.getMessage());
 				addActionError(getText("error.db"));
@@ -90,7 +91,9 @@ public class MenuAction extends ActionSupport {
 			return action;
 		case "check":
 			try {
-				TermsToOntologiesClient termsToOntologiesClient = TermsToOntologiesClient.getInstance();
+				TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient(
+						(String)sessionMap.get(SessionVariables.BIOPORTAL_USER_ID.toString()), 
+						(String)sessionMap.get(SessionVariables.BIOPORTAL_API_KEY.toString()));
 				termAdoptions = termsToOntologiesClient.checkTermAdoptions();
 				numberOfTermAdoptions = termAdoptions.size();
 			} catch (SQLException e) {
@@ -154,5 +157,10 @@ public class MenuAction extends ActionSupport {
 
 	public void setOntologies(List<String> ontologies) {
 		this.ontologies = ontologies;
+	}
+
+	@Override
+	public void setSession(Map<String, Object> sessionMap) {
+		this.sessionMap = sessionMap;
 	}
 }

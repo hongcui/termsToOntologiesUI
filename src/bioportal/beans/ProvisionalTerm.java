@@ -1,8 +1,5 @@
 package bioportal.beans;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import bioportal.OntologyMapper;
 
 public class ProvisionalTerm {

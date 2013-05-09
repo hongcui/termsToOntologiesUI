@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<%@ page import="java.util.List, ui.db.*, bioportal.beans.*, bioportal.db.*" %>
+<%@ page import="java.util.List, ui.db.*, bioportal.beans.*, bioportal.db.*, javax.servlet.http.HttpSession, ui.action.*" %>
 
 
 <s:if test="%{action=='send'}">
@@ -41,6 +41,7 @@
 
 <s:if test="%{action=='update'}">
 <h2>Pending Terms</h2>
+* marks your submissions
 
 	<h3>Structure</h3>
 	<%
@@ -51,7 +52,17 @@
 		 	<s:param name="action">%{action}</s:param>
 		    <s:param name="localId"><%= structureProvisionalTerm.getLocalId() %></s:param>
 		</s:url>
-		<s:a href="%{termURL}"><%= structureProvisionalTerm.getTerm() %></s:a>
+		<s:a href="%{termURL}">
+		
+		<%
+		if(structureProvisionalTerm.getSubmittedby().equals(session.getAttribute(SessionVariables.BIOPORTAL_USER_ID.toString()))) {
+		%>
+			<%= structureProvisionalTerm.getTerm() + " *" %>
+		<% } else { %>
+			<%= structureProvisionalTerm.getTerm() %>
+		<% } %>
+		
+		</s:a>
 		<%
 	}
 %>
@@ -65,7 +76,17 @@ List<ProvisionalTerm> characterProvisionalTerms = ProvisionalTermDAO.getInstance
 			<s:param name="action">%{action}</s:param>
 		    <s:param name="localId"><%= characterProvisionalTerm.getLocalId() %></s:param><br/>
 		</s:url>
-		<s:a href="%{termURL}"><%= characterProvisionalTerm.getTerm() %></s:a>
+		<s:a href="%{termURL}">
+		
+		<%
+		if(characterProvisionalTerm.getSubmittedby().equals(session.getAttribute(SessionVariables.BIOPORTAL_USER_ID.toString()))) {
+		%>
+			<%= characterProvisionalTerm.getTerm() + " *" %>
+		<% } else { %>
+			<%= characterProvisionalTerm.getTerm() %>
+		<% } %>
+		
+		</s:a>
 
 		<%
 	}
@@ -77,8 +98,9 @@ List<ProvisionalTerm> characterProvisionalTerms = ProvisionalTermDAO.getInstance
 
 <s:if test="%{action=='adopted'}">
 <h2>Adopted Terms</h2>
+* marks your submissions
 
-		<h3>Structure</h3>
+	<h3>Structure</h3>
 	<%
 	List<ProvisionalTerm> structureProvisionalTerms = ProvisionalTermDAO.getInstance().getAdoptedStructureTerms();
 	for(ProvisionalTerm structureProvisionalTerm : structureProvisionalTerms) {
@@ -87,8 +109,17 @@ List<ProvisionalTerm> characterProvisionalTerms = ProvisionalTermDAO.getInstance
 		 	<s:param name="action">%{action}</s:param>
 		    <s:param name="localId"><%= structureProvisionalTerm.getLocalId() %></s:param>
 		</s:url>
-		<s:a href="%{termURL}"><%= structureProvisionalTerm.getTerm() %></s:a>
-
+		<s:a href="%{termURL}">
+		
+		<%
+		if(structureProvisionalTerm.getSubmittedby().equals(session.getAttribute(SessionVariables.BIOPORTAL_USER_ID.toString()))) {
+		%>
+			<%= structureProvisionalTerm.getTerm() + " *" %>
+		<% } else { %>
+			<%= structureProvisionalTerm.getTerm() %>
+		<% } %>
+		
+		</s:a>
 		<%
 	}
 %>
@@ -102,7 +133,17 @@ List<ProvisionalTerm> characterProvisionalTerms = ProvisionalTermDAO.getInstance
 			<s:param name="action">%{action}</s:param>
 		    <s:param name="localId"><%= characterProvisionalTerm.getLocalId() %></s:param><br/>
 		</s:url>
-		<s:a href="%{termURL}"><%= characterProvisionalTerm.getTerm() %></s:a>
+		<s:a href="%{termURL}">
+		
+		<%
+		if(characterProvisionalTerm.getSubmittedby().equals(session.getAttribute(SessionVariables.BIOPORTAL_USER_ID.toString()))) {
+		%>
+			<%= characterProvisionalTerm.getTerm() + " *" %>
+		<% } else { %>
+			<%= characterProvisionalTerm.getTerm() %>
+		<% } %>
+		
+		</s:a>
 
 		<%
 	}
