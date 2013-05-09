@@ -26,9 +26,21 @@ public class ProvisionalTermAction extends ActionSupport implements SessionAware
 	private List<String> ontologies = new ArrayList<String>();
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Map<String, Object> sessionMap;
+	private List<ProvisionalTerm> structureProvisionalTerms;
+	private List<ProvisionalTerm> characterProvisionalTerms;
+	private List<ProvisionalTerm> structureAwaitingAdoptionProvisionalTerms;
+	private List<ProvisionalTerm> characterAwaitingAdoptionProvisionalTerms;
+	private List<ProvisionalTerm> structureAdoptedProvisionalTerms;
+	private List<ProvisionalTerm> characterAdoptedProvisionalTerms;
 	
-	public ProvisionalTermAction() {
+	public ProvisionalTermAction() throws ClassNotFoundException, SQLException, IOException {
 		ontologies = OntologyMapper.getInstance().getOntologies();
+		structureProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedStructureTerms();
+		characterProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedCharacterTerms();
+		structureAwaitingAdoptionProvisionalTerms = ProvisionalTermDAO.getInstance().getAllStructureAwaitingAdoption();
+		characterAwaitingAdoptionProvisionalTerms = ProvisionalTermDAO.getInstance().getAllCharacterAwaitingAdoption();
+		structureAdoptedProvisionalTerms = ProvisionalTermDAO.getInstance().getAdoptedStructureTerms();
+		characterAdoptedProvisionalTerms = ProvisionalTermDAO.getInstance().getAdoptedCharacterTerms();
 	}
 
 	public String execute() {
@@ -99,4 +111,60 @@ public class ProvisionalTermAction extends ActionSupport implements SessionAware
 	public void setSession(Map<String, Object> sessionMap) {
 		this.sessionMap = sessionMap;
 	}
+
+	public List<ProvisionalTerm> getStructureProvisionalTerms() {
+		return structureProvisionalTerms;
+	}
+
+	public void setStructureProvisionalTerms(
+			List<ProvisionalTerm> structureProvisionalTerms) {
+		this.structureProvisionalTerms = structureProvisionalTerms;
+	}
+
+	public List<ProvisionalTerm> getCharacterProvisionalTerms() {
+		return characterProvisionalTerms;
+	}
+
+	public void setCharacterProvisionalTerms(
+			List<ProvisionalTerm> characterProvisionalTerms) {
+		this.characterProvisionalTerms = characterProvisionalTerms;
+	}
+	
+	public List<ProvisionalTerm> getStructureAwaitingAdoptionProvisionalTerms() {
+		return structureAwaitingAdoptionProvisionalTerms;
+	}
+
+	public void setStructureAwaitingAdoptionProvisionalTerms(
+			List<ProvisionalTerm> structureAwaitingAdoptionProvisionalTerms) {
+		this.structureAwaitingAdoptionProvisionalTerms = structureAwaitingAdoptionProvisionalTerms;
+	}
+
+	public List<ProvisionalTerm> getCharacterAwaitingAdoptionProvisionalTerms() {
+		return characterAwaitingAdoptionProvisionalTerms;
+	}
+
+	public void setCharacterAwaitingAdoptionProvisionalTerms(
+			List<ProvisionalTerm> characterAwaitingAdoptionProvisionalTerms) {
+		this.characterAwaitingAdoptionProvisionalTerms = characterAwaitingAdoptionProvisionalTerms;
+	}
+
+	public List<ProvisionalTerm> getStructureAdoptedProvisionalTerms() {
+		return structureAdoptedProvisionalTerms;
+	}
+
+	public void setStructureAdoptedProvisionalTerms(
+			List<ProvisionalTerm> structureAdoptedProvisionalTerms) {
+		this.structureAdoptedProvisionalTerms = structureAdoptedProvisionalTerms;
+	}
+
+	public List<ProvisionalTerm> getCharacterAdoptedProvisionalTerms() {
+		return characterAdoptedProvisionalTerms;
+	}
+
+	public void setCharacterAdoptedProvisionalTerms(
+			List<ProvisionalTerm> characterAdoptedProvisionalTerms) {
+		this.characterAdoptedProvisionalTerms = characterAdoptedProvisionalTerms;
+	}
+	
+	
 }
