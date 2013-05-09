@@ -1,11 +1,14 @@
 package bioportal.client;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +24,15 @@ import bioportal.beans.response.Success;
 public class TermsToOntologiesClient {
 
 	private BioPortalClient bioPortalClient;
+	private static TermsToOntologiesClient instance;
 	
-	public TermsToOntologiesClient() throws Exception {
+	public static TermsToOntologiesClient getInstance() throws IOException {
+		if(instance == null)
+			instance = new TermsToOntologiesClient();
+		return instance;
+	}
+	
+	private TermsToOntologiesClient() throws IOException {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties(); 
 		properties.load(loader.getResourceAsStream("config.properties"));
@@ -35,9 +45,12 @@ public class TermsToOntologiesClient {
 	/**
 	 * @param provisionalTerm
 	 * @return temporary id given to the provided provisionalTerm
-	 * @throws Exception
+	 * @throws SQLException 
+	 * @throws JAXBException 
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public String sendTerm(ProvisionalTerm provisionalTerm) throws Exception {
+	public String sendTerm(ProvisionalTerm provisionalTerm) throws SQLException, JAXBException, ClassNotFoundException, IOException, IllegalArgumentException {
 		Success success = bioPortalClient.createProvisionalTerm(provisionalTerm);
 		String temporaryId = getIdFromSuccessfulCreate(success, "id");
 		provisionalTerm.setTemporaryid(temporaryId);
@@ -47,9 +60,12 @@ public class TermsToOntologiesClient {
 	
 	/**
 	 * @return Map<Temporary ID, Permanent ID> of newly discovered adoptions 
-	 * @throws Exception 
+	 * @throws SQLException 
+	 * @throws JAXBException 
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public Map<String, String> checkTermAdoptions() throws Exception  {
+	public Map<String, String> checkTermAdoptions() throws SQLException, JAXBException, ClassNotFoundException, IOException  {
 		Map<String, String> result = new HashMap<String, String>();
 		List<ProvisionalTerm> allProvisionalTermsAwaitingAdoption = ProvisionalTermDAO.getInstance().getAllAwaitingAdoption();
 		for(ProvisionalTerm provisionalTerm : allProvisionalTermsAwaitingAdoption) {
@@ -94,17 +110,17 @@ public class TermsToOntologiesClient {
 		return null;
 	}
 
-	public void updateTerm(ProvisionalTerm provisionalTerm) throws Exception {
+	public void updateTerm(ProvisionalTerm provisionalTerm) throws JAXBException, SQLException, ClassNotFoundException, IOException {
 		bioPortalClient.updateProvisionalTerm(provisionalTerm.getTemporaryid(), provisionalTerm);
 		ProvisionalTermDAO.getInstance().updateAwaitingAdoption(provisionalTerm);
 	}
 
-	public void deleteTerm(ProvisionalTerm provisionalTerm) throws Exception {
+	public void deleteTerm(ProvisionalTerm provisionalTerm) throws JAXBException, SQLException, ClassNotFoundException, IOException {
 		bioPortalClient.deleteProvisionalTerm(provisionalTerm.getTemporaryid());
 		ProvisionalTermDAO.getInstance().deleteAwaitingAdoption(provisionalTerm);
 	}
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws IOException, JAXBException {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties(); 
 		properties.load(loader.getResourceAsStream("config.properties"));

@@ -5,7 +5,6 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 
 <tiles-definitions>
-
 	<definition name="allLayout" template="/WEB-INF/AllLayout.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/Header.jsp" />
@@ -37,12 +36,8 @@
 		<put-attribute name="title" value="Report Adopted Terms" />
 		<put-attribute name="body" value="/WEB-INF/ReportAdoptedTerms.jsp" />
 	</definition>
-		<definition name="error.tiles" extends="3PartLayout">
+	<definition name="error.tiles" extends="3PartLayout">
 		<put-attribute name="title" value="Error" />
 		<put-attribute name="body" value="/WEB-INF/Error.jsp" />
-	</definition>
-	<definition name="empty.tiles" extends="3PartLayout">
-		<put-attribute name="title" value="Empty" />
-		<put-attribute name="body" value="/WEB-INF/Empty.jsp" />
 	</definition>
 </tiles-definitions>

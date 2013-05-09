@@ -1,5 +1,6 @@
 package bioportal.db;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,15 +14,15 @@ import bioportal.beans.ProvisionalTerm;
 public class ProvisionalTermDAO extends AbstractDAO {
 
 	private static ProvisionalTermDAO instance;
-
-	private ProvisionalTermDAO() throws Exception {
+	
+	private ProvisionalTermDAO() throws SQLException, ClassNotFoundException, IOException {
 		this.openConnection();
 		createTableIfNecessary("awaitingadoption");
 		createTableIfNecessary("adopted");
 		this.closeConnection();
 	}
 	
-	public static ProvisionalTermDAO getInstance() throws Exception {
+	public static ProvisionalTermDAO getInstance() throws SQLException, ClassNotFoundException, IOException {
 		if(instance == null)
 			instance = new ProvisionalTermDAO();
 		return instance;
@@ -42,28 +43,28 @@ public class ProvisionalTermDAO extends AbstractDAO {
 	
 	public List<ProvisionalTerm> getAllStructureAwaitingAdoption() throws SQLException {
 		this.openConnection();
-		List<ProvisionalTerm> result =  this.getAll("awaitingAdoption", "WHERE category='structure'");
+		List<ProvisionalTerm> result =  this.getAll("awaitingAdoption", "WHERE termType='structure'");
 		this.closeConnection();
 		return result;
 	}
 	
 	public List<ProvisionalTerm> getAdoptedStructureTerms() throws SQLException {
 		this.openConnection();
-		List<ProvisionalTerm> result =  this.getAll("adopted", "WHERE category='structure'");
+		List<ProvisionalTerm> result =  this.getAll("adopted", "WHERE termType='structure'");
 		this.closeConnection();
 		return result;
 	}
 	
 	public List<ProvisionalTerm> getAdoptedCharacterTerms() throws SQLException {
 		this.openConnection();
-		List<ProvisionalTerm> result =  this.getAll("adopted", "WHERE category='character'");
+		List<ProvisionalTerm> result =  this.getAll("adopted", "WHERE termType='character'");
 		this.closeConnection();
 		return result;
 	}
 	
 	public List<ProvisionalTerm> getAllCharacterAwaitingAdoption() throws SQLException {
 		this.openConnection();
-		List<ProvisionalTerm> result =  this.getAll("awaitingAdoption", "WHERE category='character'");
+		List<ProvisionalTerm> result =  this.getAll("awaitingAdoption", "WHERE termType='character'");
 		this.closeConnection();
 		return result;
 	}
@@ -87,7 +88,7 @@ public class ProvisionalTermDAO extends AbstractDAO {
 	
 	private void storeProvisionalTerm(String tableName, ProvisionalTerm provisionalTerm) throws SQLException {
 		PreparedStatement preparedStatement = this.prepareStatement("INSERT INTO bioportal_" + tableName + " (`localId`, `temporaryId`, `permanentId`, `superClass`, " +
-				"`submittedby`, `definition`, `ontologyids`, `preferredname`, `synonyms`, `source`, `category`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				"`submittedby`, `definition`, `ontologyids`, `preferredname`, `synonyms`, `source`, `termType`, `termCategory`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		preparedStatement.setString(1, provisionalTerm.getLocalId());
 		preparedStatement.setString(2, provisionalTerm.getTemporaryid());
 		preparedStatement.setString(3, provisionalTerm.getPermanentid());
@@ -98,7 +99,8 @@ public class ProvisionalTermDAO extends AbstractDAO {
 		preparedStatement.setString(8, provisionalTerm.getTerm());
 		preparedStatement.setString(9, provisionalTerm.getSynonyms());
 		preparedStatement.setString(10, provisionalTerm.getSource());
-		preparedStatement.setString(11, provisionalTerm.getCategory());
+		preparedStatement.setString(11, provisionalTerm.getTermType());
+		preparedStatement.setString(12, provisionalTerm.getTermCategory());
 		preparedStatement.executeUpdate();
 	}
 	
@@ -114,7 +116,8 @@ public class ProvisionalTermDAO extends AbstractDAO {
 				"  `preferredName` varchar(100) DEFAULT NULL, " +
 				"  `synonyms` varchar(100) DEFAULT NULL, " +
 				"  `source` varchar(100) DEFAULT NULL, " +
-				"  `category` varchar(100) DEFAULT NULL, " +
+				"  `termType` varchar(100) DEFAULT NULL, " +
+				"  `termCategory` varchar(100) DEFAULT NULL, " +
 				"  PRIMARY KEY (`localId`))");
 	}
 	
@@ -127,7 +130,8 @@ public class ProvisionalTermDAO extends AbstractDAO {
 			result.add(new ProvisionalTerm(
 					resultSet.getString("localId"),
 					resultSet.getString("preferredName"), 
-					resultSet.getString("category"),
+					resultSet.getString("termType"),
+					resultSet.getString("termCategory"),
 					resultSet.getString("definition"), 
 					resultSet.getString("superClass"),
 					resultSet.getString("synonyms"),
@@ -181,7 +185,8 @@ public class ProvisionalTermDAO extends AbstractDAO {
 		return new ProvisionalTerm(
 					resultSet.getString("localId"),
 					resultSet.getString("preferredName"), 
-					resultSet.getString("category"),
+					resultSet.getString("termType"),
+					resultSet.getString("termCategory"),
 					resultSet.getString("definition"), 
 					resultSet.getString("superClass"),
 					resultSet.getString("synonyms"),
@@ -209,21 +214,21 @@ public class ProvisionalTermDAO extends AbstractDAO {
 		this.closeConnection();
 	}
 
-	public ProvisionalTerm getAdopted(String localId) throws Exception {
+	public ProvisionalTerm getAdopted(String localId) throws SQLException {
 		this.openConnection();
 		ProvisionalTerm result = getTerm("adopted", localId);
 		this.closeConnection();
 		return result;
 	}
 
-	public ProvisionalTerm getAwaitingAdoption(String localId) throws Exception {
+	public ProvisionalTerm getAwaitingAdoption(String localId) throws SQLException {
 		this.openConnection();
 		ProvisionalTerm result = getTerm("awaitingadoption", localId);
 		this.closeConnection();
 		return result;
 	}
 	
-	public ProvisionalTerm getTerm(String tableName, String localId) throws Exception {
+	public ProvisionalTerm getTerm(String tableName, String localId) throws SQLException {
 		PreparedStatement preparedStatement = this.executeSQL("SELECT * FROM bioportal_" + tableName + " " +
 				"WHERE localId = " + localId);
 		ResultSet resultSet = preparedStatement.getResultSet();
@@ -231,7 +236,8 @@ public class ProvisionalTermDAO extends AbstractDAO {
 		return new ProvisionalTerm(
 					resultSet.getString("localId"),
 					resultSet.getString("preferredName"), 
-					resultSet.getString("category"),
+					resultSet.getString("termType"),
+					resultSet.getString("termCategory"),
 					resultSet.getString("definition"), 
 					resultSet.getString("superClass"),
 					resultSet.getString("synonyms"),

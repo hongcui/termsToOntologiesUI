@@ -1,16 +1,24 @@
 package ui.action;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ui.db.IUnadoptedTermDAO;
+import ui.db.UnadoptedTermDAO;
 
 import bioportal.OntologyMapper;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.client.TermsToOntologiesClient;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.sun.jersey.api.client.UniformInterfaceException;
 
 public class ProvisionalTermSubmissionAction extends ActionSupport {
 
@@ -25,10 +33,39 @@ public class ProvisionalTermSubmissionAction extends ActionSupport {
 	
 	public String execute() {
 		try {
-			TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient();
+			TermsToOntologiesClient termsToOntologiesClient = TermsToOntologiesClient.getInstance();
 			termsToOntologiesClient.sendTerm(provisionalTerm);
+			IUnadoptedTermDAO unadoptedTermDAO = UnadoptedTermDAO.getInstance();
+			unadoptedTermDAO.markSent(provisionalTerm.getLocalId());
+			addActionMessage(getText("success.send"));
+			provisionalTerm = null;
+		} catch (IllegalArgumentException e) {
+			addActionError(getText("error.parameters"));
+			logger.error(e.getMessage());
+			return ERROR;
+		} catch (JAXBException e) {
+			addActionError(getText("error.webservice"));
+			logger.error(e.getMessage());
+			return ERROR;
+		} catch (UniformInterfaceException e) {
+			addActionError(getText("error.webservice"));
+			logger.error(e.getMessage());
+			return ERROR;
+		} catch (SQLException e) {
+			addActionError(getText("error.db"));
+			logger.error(e.getMessage());
+			return ERROR;
+		} catch (IOException e) {
+			addActionError(getText("error.properties"));
+			logger.error(e.getMessage());
+			return ERROR;
+		} catch (ClassNotFoundException e) {
+			logger.error(e.getMessage());
+			addActionError(getText("error.properties"));
+			return ERROR;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			addActionError("Error, check the logs for more information");
 			return ERROR;
 		}
 	

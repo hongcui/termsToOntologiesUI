@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<h2>Terms To Ontologies</h2>
+<h1>Terms To Ontologies</h1>
 <table>
 <tr>
 <td>

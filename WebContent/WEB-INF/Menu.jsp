@@ -5,7 +5,9 @@
 
 
 <s:if test="%{action=='send'}">
-	<h2>Structure</h2>
+<h2>New Terms</h2>
+
+	<h3>Structure</h3>
 	<%
 	List<ProvisionalTerm> structureProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedStructureTerms();
 	for(ProvisionalTerm structureProvisionalTerm : structureProvisionalTerms) {
@@ -20,7 +22,7 @@
 	}
 %>
 
-<h2>Character</h2>
+<h3>Character</h3>
 <%
 	List<ProvisionalTerm> characterProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedCharacterTerms();
 	for(ProvisionalTerm characterProvisionalTerm : characterProvisionalTerms) {
@@ -38,7 +40,9 @@
 
 
 <s:if test="%{action=='update'}">
-	<h2>Structure</h2>
+<h2>Pending Terms</h2>
+
+	<h3>Structure</h3>
 	<%
 	List<ProvisionalTerm> structureProvisionalTerms = ProvisionalTermDAO.getInstance().getAllStructureAwaitingAdoption();
 	for(ProvisionalTerm structureProvisionalTerm : structureProvisionalTerms) {
@@ -52,7 +56,7 @@
 	}
 %>
 
-<h2>Character</h2>
+<h3>Character</h3>
 <%
 List<ProvisionalTerm> characterProvisionalTerms = ProvisionalTermDAO.getInstance().getAllCharacterAwaitingAdoption();
 	for(ProvisionalTerm characterProvisionalTerm : characterProvisionalTerms) {
@@ -72,7 +76,9 @@ List<ProvisionalTerm> characterProvisionalTerms = ProvisionalTermDAO.getInstance
 
 
 <s:if test="%{action=='adopted'}">
-		<h2>Structure</h2>
+<h2>Adopted Terms</h2>
+
+		<h3>Structure</h3>
 	<%
 	List<ProvisionalTerm> structureProvisionalTerms = ProvisionalTermDAO.getInstance().getAdoptedStructureTerms();
 	for(ProvisionalTerm structureProvisionalTerm : structureProvisionalTerms) {
@@ -87,7 +93,7 @@ List<ProvisionalTerm> characterProvisionalTerms = ProvisionalTermDAO.getInstance
 	}
 %>
 
-<h2>Character</h2>
+<h3>Character</h3>
 <%
 	List<ProvisionalTerm> characterProvisionalTerms = ProvisionalTermDAO.getInstance().getAdoptedCharacterTerms();
 	for(ProvisionalTerm characterProvisionalTerm : characterProvisionalTerms) {

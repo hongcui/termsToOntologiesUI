@@ -32,45 +32,35 @@
 			class="ui.action.LoginAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">welcome.tiles</result>
-			<result name="login">WEB-INF/Login.jsp</result>
 			<result name="error">WEB-INF/Login.jsp</result>
 		</action>
 		<action name = "menuAction" class="ui.action.MenuAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
-			<result name="empty" type="tiles">empty.tiles</result>
 			<result name="send" type="tiles">term.tiles</result>
 			<result name="update" type="tiles">term.tiles</result>
+			<result name="adopted" type="tiles">term.tiles</result>
 			<result name="check" type="tiles">reportAdoptedTerms.tiles</result>
-			<result name="login">WEB-INF/Login.jsp</result>
 			<result name="error" type="tiles">error.tiles</result>
 		</action>	
 		<action name = "provisionalTerm" class="ui.action.ProvisionalTermAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">term.tiles</result>
-			<result name="login">WEB-INF/Login.jsp</result>
-			<result name="error" type="tiles">error.tiles</result>
+			<result name="error" type="tiles">term.tiles</result>
 		</action>
 		<action name = "provisionalTermSubmission" class="ui.action.ProvisionalTermSubmissionAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">term.tiles</result>
-			<result name="input" type="tiles">term.tiles</result>
-			<result name="login">WEB-INF/Login.jsp</result>
-			<result name="error" type="tiles">error.tiles</result>
+			<result name="error" type="tiles">term.tiles</result>
 		</action>	
 		<action name = "provisionalTermUpdate" class="ui.action.ProvisionalTermUpdateAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">term.tiles</result>
-			<result name="input" type="tiles">term.tiles</result>
-			<result name="login">WEB-INF/Login.jsp</result>
-			<result name="error" type="tiles">error.tiles</result>
+			<result name="error" type="tiles">term.tiles</result>
 		</action>	
 			<action name = "provisionalTermDelete" class="ui.action.ProvisionalTermDeleteAction">
 			<interceptor-ref name="loggingStack"></interceptor-ref>
 			<result name="success" type="tiles">term.tiles</result>
-			<result name="empty" type="tiles">empty.tiles</result>
-			<result name="input" type="tiles">term.tiles</result>
-			<result name="login">WEB-INF/Login.jsp</result>
-			<result name="error" type="tiles">error.tiles</result>
+			<result name="error" type="tiles">term.tiles</result>
 		</action>	
 	
 	</package>

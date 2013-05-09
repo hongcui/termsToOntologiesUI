@@ -1,12 +1,17 @@
 package ui.action;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ui.db.IUnadoptedTermDAO;
 import ui.db.UnadoptedTermDAO;
 
 import bioportal.OntologyMapper;
@@ -33,39 +38,76 @@ public class MenuAction extends ActionSupport {
 		switch(action) {
 		case "send":
 			try {
-				provisionalTerm = UnadoptedTermDAO.getInstance().getFirstUnadoptedTerm();
-			} catch (Exception e) {
+				IUnadoptedTermDAO unadoptedTermDAO = UnadoptedTermDAO.getInstance();
+				provisionalTerm = unadoptedTermDAO.getFirstUnadoptedTerm();				
+			} catch (SQLException e) {
 				logger.error(e.getMessage());
+				addActionError(getText("error.db"));
+				return ERROR;
+			} catch (ClassNotFoundException e) {
+				logger.error(e.getMessage());
+				addActionError(getText("error.properties"));
+				return ERROR;
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+				addActionError(getText("error.properties"));
 				return ERROR;
 			}
 			return action;
 		case "update":
 			try {
 				provisionalTerm = ProvisionalTermDAO.getInstance().getFirstAwaitingTerm();
-				if(provisionalTerm==null)
-					return "empty";
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				logger.error(e.getMessage());
+				addActionError(getText("error.db"));
+				return ERROR;
+			} catch (ClassNotFoundException e) {
+				logger.error(e.getMessage());
+				addActionError(getText("error.properties"));
+				return ERROR;
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+				addActionError(getText("error.properties"));
 				return ERROR;
 			}
 			return action;
 		case "adopted":
 			try {
 				provisionalTerm = ProvisionalTermDAO.getInstance().getFirstAdoptedTerm();
-				if(provisionalTerm==null)
-					return "empty";
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				logger.error(e.getMessage());
+				addActionError(getText("error.db"));
+				return ERROR;
+			} catch (ClassNotFoundException e) {
+				logger.error(e.getMessage());
+				addActionError(getText("error.properties"));
+				return ERROR;
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+				addActionError(getText("error.properties"));
 				return ERROR;
 			}
 			return action;
 		case "check":
 			try {
-				TermsToOntologiesClient termsToOntologiesClient = new TermsToOntologiesClient();
+				TermsToOntologiesClient termsToOntologiesClient = TermsToOntologiesClient.getInstance();
 				termAdoptions = termsToOntologiesClient.checkTermAdoptions();
 				numberOfTermAdoptions = termAdoptions.size();
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				logger.error(e.getMessage());
+				addActionError(getText("error.db"));
+				return ERROR;
+			} catch (JAXBException e) {
+				logger.error(e.getMessage());
+				addActionError(getText("error.webservice"));
+				return ERROR;
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+				addActionError(getText("error.properties"));
+				return ERROR;
+			} catch (ClassNotFoundException e) {
+				logger.error(e.getMessage());
+				addActionError(getText("error.properties"));
 				return ERROR;
 			}
 			return action;

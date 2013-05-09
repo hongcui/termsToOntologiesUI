@@ -1,6 +1,9 @@
 package ui.db;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,19 +23,19 @@ public class UserDAO extends AbstractDAO {
 	private static UserDAO instance;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	public static UserDAO getInstance() throws Exception {
+	public static UserDAO getInstance() throws SQLException, ClassNotFoundException, IOException {
 		if(instance == null)
 			instance = new UserDAO();
 		return instance;
 	}
 	
-	private UserDAO() throws Exception { 
+	private UserDAO() throws SQLException, ClassNotFoundException, IOException { 
 		this.openConnection();
 		createTableIfNecessary();
 		this.closeConnection();
 	}
 	
-	public void addUser(User user) throws Exception {
+	public void addUser(User user) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		user.setPassword(getEncryptedPassword(user.getPassword()));
 		this.openConnection();
 		String sql = "INSERT INTO ui_users (name, password) VALUES ('" + user.getName() + "','" + user.getPassword() + "')";
@@ -40,7 +43,7 @@ public class UserDAO extends AbstractDAO {
 		this.closeConnection();
 	}
 	
-	private String getEncryptedPassword(String text) throws Exception {
+	private String getEncryptedPassword(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(text.getBytes("UTF-8"));
 		byte[] digest = md.digest();
@@ -70,7 +73,11 @@ public class UserDAO extends AbstractDAO {
 		try {
 			User dbUser = this.getUser(user.getName());
 			return dbUser.getPassword().equals(this.getEncryptedPassword(user.getPassword()));
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+		} catch (NoSuchAlgorithmException e) {
+			logger.error(e.getMessage());
+		} catch (UnsupportedEncodingException e) {
 			logger.error(e.getMessage());
 		}
 		return false;

@@ -9,7 +9,8 @@ public class ProvisionalTerm {
 
 	private String localId;
 	private String term;
-	private String category;
+	private String termType;
+	private String termCategory;
 	private String definition;
 	private String superclass;
 	private String synonyms;
@@ -21,13 +22,14 @@ public class ProvisionalTerm {
 
 	public ProvisionalTerm() { }
 
-	public ProvisionalTerm(String localId, String term, String category, String definition, String superclass,
+	public ProvisionalTerm(String localId, String term, String termType, String termCategory, String definition, String superclass,
 			String synonyms, String ontologyids, String submittedby,
 			String temporaryid, String permanentid, String source) {
 		super();
 		this.localId = localId;
 		this.term = term;
-		this.category = category;
+		this.termType = termType;
+		this.termCategory = termCategory;
 		this.definition = definition;
 		this.superclass = superclass;
 		this.synonyms = synonyms;
@@ -50,16 +52,28 @@ public class ProvisionalTerm {
 		this.localId = localId;
 	}
 	
-	public boolean hasCategory() {
-		return this.category != null && !this.category.isEmpty();
+	public boolean hasTermType() {
+		return this.termType != null && !this.termType.isEmpty();
 	}
 
-	public String getCategory() {
-		return category;
+	public String getTermType() {
+		return termType;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setTermType(String termType) {
+		this.termType = termType;
+	}
+	
+	public boolean hasTermCategory() {
+		return this.termCategory != null && !this.termCategory.isEmpty();
+	}
+
+	public String getTermCategory() {
+		return termCategory;
+	}
+
+	public void setTermCategory(String termCategory) {
+		this.termCategory = termCategory;
 	}
 
 	public String getPermanentid() {
@@ -190,7 +204,8 @@ public class ProvisionalTerm {
 		stringBuilder.append("temporaryid: " + this.temporaryid + "\n");
 		stringBuilder.append("permanentid: " + this.permanentid + "\n");
 		stringBuilder.append("source: " + this.source + "\n");
-		stringBuilder.append("category: " + this.category + "\n");
+		stringBuilder.append("termType: " + this.termType + "\n");
+		stringBuilder.append("termCategory: " + this.termCategory + "\n");
 		return stringBuilder.toString();
 	}
 }

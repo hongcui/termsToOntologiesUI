@@ -1,11 +1,14 @@
 package ui.action;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ui.db.IUnadoptedTermDAO;
 import ui.db.UnadoptedTermDAO;
 import bioportal.OntologyMapper;
 import bioportal.beans.ProvisionalTerm;
@@ -26,11 +29,11 @@ public class ProvisionalTermAction extends ActionSupport {
 	}
 
 	public String execute() {
-		//here i would load the extra info from the database as far it is available already e.g. source;
 		try {
 			switch(action) {
 			case "send":
-				provisionalTerm = UnadoptedTermDAO.getInstance().getUnadoptedTerm(localId);
+				IUnadoptedTermDAO unadoptedTermDAO = UnadoptedTermDAO.getInstance();
+				provisionalTerm = unadoptedTermDAO.getUnadoptedTerm(localId);				
 				return SUCCESS;
 			case "update":
 				provisionalTerm = ProvisionalTermDAO.getInstance().getAwaitingAdoption(localId);
@@ -39,10 +42,20 @@ public class ProvisionalTermAction extends ActionSupport {
 				provisionalTerm = ProvisionalTermDAO.getInstance().getAdopted(localId);
 				return SUCCESS;
 			default:
+				addActionError("Unknown action");
 				return ERROR;
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			addActionError(getText("error.db"));
 			logger.error(e.getMessage());
+			return ERROR;
+		} catch (ClassNotFoundException e) {
+			logger.error(e.getMessage());
+			addActionError(getText("error.properties"));
+			return ERROR;
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			addActionError(getText("error.properties"));
 			return ERROR;
 		}
 	}

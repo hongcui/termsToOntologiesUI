@@ -1,5 +1,6 @@
 package db;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,7 +14,7 @@ public abstract class AbstractDAO {
 	private String databasePassword;
 	protected Connection connection;
 
-	public AbstractDAO() throws Exception {
+	public AbstractDAO() throws IOException, ClassNotFoundException {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties(); 
 		properties.load(loader.getResourceAsStream("config.properties"));

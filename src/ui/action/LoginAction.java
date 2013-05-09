@@ -1,5 +1,8 @@
 package ui.action;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +27,15 @@ public class LoginAction extends ActionSupport {
 				ServletActionContext.getRequest().getSession().setAttribute(USER_HANDLE, this.username);
 				return SUCCESS;
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			addActionError(getText("error.db"));	
+		} catch (ClassNotFoundException e) {
+			logger.error(e.getMessage());
+			addActionError(getText("error.properties"));	
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			addActionError(getText("error.properties"));	
 		}
 		addActionError(getText("error.login"));		
 		return ERROR;

@@ -1,17 +1,15 @@
 package bioportal.client;
-import java.util.List;
+
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
 
 import bioportal.beans.Filter;
 import bioportal.beans.ProvisionalTerm;
-import bioportal.beans.response.Entry;
-import bioportal.beans.response.Relations;
 import bioportal.beans.response.Success;
 
 import com.sun.jersey.api.client.Client;
@@ -51,11 +49,10 @@ public class BioPortalClient {
 	 * Get a single provisional term for the given provisional term id.
 	 * @param termid
 	 * @return Success
-	 * @throws JAXBException 
-	 * @throws Exception when returned XML cannot be parsed into schema, 
+	 * @throws JAXBException when returned XML cannot be parsed into schema, 
 	 * e.g. because no success but error response was returned by web service
 	 */
-	public Success getProvisionalTerm(String termId) throws Exception {
+	public Success getProvisionalTerm(String termId) throws JAXBException {
 		String url = this.apiUrl + "provisional";
 	    WebResource webResource = client.resource(url);
 	    MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
@@ -66,10 +63,10 @@ public class BioPortalClient {
 	
 	/**
 	 * Get all available provisional terms using a paged interface.
-	 * @throws Exception when returned XML cannot be parsed into schema, 
+	 * @throws JAXBException when returned XML cannot be parsed into schema, 
 	 * e.g. because no success but error response was returned by web service
 	 */
-	public Success getProvisionalTerms() throws Exception {
+	public Success getProvisionalTerms() throws JAXBException {
 		String url = this.apiUrl + "provisional";
 	    WebResource webResource = client.resource(url);
 	    MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
@@ -81,11 +78,10 @@ public class BioPortalClient {
 	 * Get all available provisional terms using a paged interface.
 	 * @param filter
 	 * @return Success
-	 * @return Success
-	 * @throws Exception when returned XML cannot be parsed into schema, 
+	 * @throws JAXBException when returned XML cannot be parsed into schema, 
 	 * e.g. because no success but error response was returned by web service
 	 */
-	public Success getProvisionalTerms(Filter filter) throws Exception {
+	public Success getProvisionalTerms(Filter filter) throws JAXBException {
 		String url = this.apiUrl + "provisional";
 	    WebResource webResource = client.resource(url);
 	    MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
@@ -115,10 +111,10 @@ public class BioPortalClient {
 	 * Create a provisional term.
 	 * @return Success
 	 * @param provisionalTerm
-	 * @throws Exception when returned XML cannot be parsed into schema, 
+	 * @throws JAXBException when returned XML cannot be parsed into schema, 
 	 * e.g. because no success but error response was returned by web service
 	 */
-	public Success createProvisionalTerm(ProvisionalTerm provisionalTerm) throws Exception {
+	public Success createProvisionalTerm(ProvisionalTerm provisionalTerm) throws JAXBException, IllegalArgumentException {
 		String url = this.apiUrl + "provisional";
 	    WebResource webResource = client.resource(url);
 	    MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
@@ -130,8 +126,7 @@ public class BioPortalClient {
 	    	formData.add("preferredname", provisionalTerm.getTerm());
 	    	formData.add("definition", provisionalTerm.getDefinition());
 	    } else {
-	    	//required parameters not met
-	    	return null;
+	    	throw new IllegalArgumentException();
 	    }
 	    if(provisionalTerm.hasOntologyIds())
 	    	formData.add("ontologyids", provisionalTerm.getOntologyids());
@@ -148,10 +143,10 @@ public class BioPortalClient {
 	 * @param termId
 	 * @return Success
 	 * @param provisionalTerm
-	 * @throws Exception when returned XML cannot be parsed into schema, 
+	 * @throws JAXBException when returned XML cannot be parsed into schema, 
 	 * e.g. because no success but error response was returned by web service
 	 */
-	public Success updateProvisionalTerm(String termId, ProvisionalTerm provisionalTerm) throws Exception {	    
+	public Success updateProvisionalTerm(String termId, ProvisionalTerm provisionalTerm) throws JAXBException {	    
 		String url = this.apiUrl + "provisional";
 	    WebResource webResource = client.resource(url);
 	    
@@ -179,10 +174,10 @@ public class BioPortalClient {
 	 * Delete a provisional term.
 	 * @return Success
 	 * @param termId
-	 * @throws Exception when returned XML cannot be parsed into schema, 
+	 * @throws JAXBException when returned XML cannot be parsed into schema, 
 	 * e.g. because no success but error response was returned by web service
 	 */
-	public Success deleteProvisionalTerm(String termId) throws Exception {
+	public Success deleteProvisionalTerm(String termId) throws JAXBException {
 		String url = this.apiUrl + "provisional";
 	    WebResource webResource = client.resource(url);
 	    MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
@@ -191,7 +186,7 @@ public class BioPortalClient {
 	    return webResource.queryParams(queryParams).delete(Success.class);
 	}
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws JAXBException, IOException {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties(); 
 		properties.load(loader.getResourceAsStream("config.properties"));
@@ -201,30 +196,12 @@ public class BioPortalClient {
 		BioPortalClient bioPortalClient = new BioPortalClient(url, userId, apiKey);	
 		
 		String[] ids = new String[] { 
-				"http://purl.bioontology.org/ontology/provisional/50cf20bc-6ce5-4992-aa08-8fbfa3ad5925",
-				"http://purl.bioontology.org/ontology/provisional/7117c00c-88d9-457f-a39d-cf93b18564c8",
-				"http://purl.bioontology.org/ontology/provisional/36776c5f-51fe-403c-9f76-1b440185a6c2",
-				"http://purl.bioontology.org/ontology/provisional/61f9feab-8e50-408b-a48a-64a9dd0376df",
-				"http://purl.bioontology.org/ontology/provisional/a4fc6aec-fe2e-4cd1-8e37-7d2f7dcbb842",
-				"http://purl.bioontology.org/ontology/provisional/ebe43aeb-b79a-43d6-8581-ee770a80393b",
-				"http://purl.bioontology.org/ontology/provisional/524e317b-bf03-4b4d-823f-172be7263d18",
-				"http://purl.bioontology.org/ontology/provisional/7de65602-fb2d-4201-bfe7-1727c725b26a",
-				"http://purl.bioontology.org/ontology/provisional/b9d70adf-d2d2-4144-b02d-7359b5409a26",
-				"http://purl.bioontology.org/ontology/provisional/ea9b4ddf-eb2d-4f64-8bf1-a2f4324f8268",
-				"http://purl.bioontology.org/ontology/provisional/51f6ccba-23f5-4220-b5c9-9d8462ac732f",
-				"http://purl.bioontology.org/ontology/provisional/301d2180-1cf2-4f9f-b5e0-15318b5e741f",
-				"http://purl.bioontology.org/ontology/provisional/f54beb20-30b9-48ea-a030-309125d2995b",
-				"http://purl.bioontology.org/ontology/provisional/cb3d0fa2-2464-4884-83cc-b92b92f1745a",
-				"http://purl.bioontology.org/ontology/provisional/4a8fa284-b3c8-4418-b7f7-634f58cb43b5",
-				"http://purl.bioontology.org/ontology/provisional/a333d709-f724-48f2-b56a-fb4503d87beb",
-				"http://purl.bioontology.org/ontology/provisional/d3267598-ca34-4d9b-a0bc-f0ae5fbbc328",
-				"http://purl.bioontology.org/ontology/provisional/033daa88-e03e-4ed8-bf2c-fc33f81800eb",
-				"http://purl.bioontology.org/ontology/provisional/cbb1e6db-7d2d-4bd8-93ae-4563cd3150e4"
+				"http://purl.bioontology.org/ontology/provisional/5325b90e-0334-48a1-98a5-3f414c146276"
 			}; 
 				
 		for(String id : ids) {
 			bioPortalClient.deleteProvisionalTerm(id);
-		}
+		} 
 		
 		
 		//for(int i=0; i<56; i++) {

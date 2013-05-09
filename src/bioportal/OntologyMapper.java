@@ -26,7 +26,7 @@ public class OntologyMapper {
 		
 		idsToOntologies.put("1587", "PO");
 		idsToOntologies.put("1107", "PATO");
-		idsToOntologies.put("1362", "HAO");
+		idsToOntologies.put("1362", "HAO");		
 		
 		ontologies.add("PATO");
 		ontologies.add("PO");
