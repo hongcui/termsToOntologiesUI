@@ -72,7 +72,7 @@
 * marks your submissions
 
 	<h3>Structure</h3>
-		<s:iterator var="i" step="1" value="structureAwaitingAdoptionProvisionalTerms">
+		<s:iterator var="i" step="1" value="structureAdoptedProvisionalTerms">
 		<s:url action="provisionalTerm" var="termURL">
 			<s:param name="action">%{action}</s:param>
 			<s:param name="localId">
@@ -87,7 +87,7 @@
 		</s:a>
 	</s:iterator>
 	<h3>Character</h3>
-	<s:iterator var="i" step="1" value="characterAwaitingAdoptionProvisionalTerms">
+	<s:iterator var="i" step="1" value="characterAdoptedProvisionalTerms">
 		<s:url action="provisionalTerm" var="termURL">
 			<s:param name="action">%{action}</s:param>
 			<s:param name="localId">

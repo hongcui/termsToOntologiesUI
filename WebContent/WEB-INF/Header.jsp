@@ -13,7 +13,7 @@
 <s:url action="menuAction" var="menuURL" >
 <s:param name="action">update</s:param><br/>
 </s:url>
-<s:a href="%{menuURL}">Update</s:a>
+<s:a href="%{menuURL}">Pending</s:a>
 </td>
 <td>
 <s:url action="menuAction" var="menuURL" >
