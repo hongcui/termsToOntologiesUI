@@ -1,4 +1,4 @@
-package bioportal;
+package ui.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;

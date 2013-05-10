@@ -3,17 +3,18 @@ package ui.db;
 import java.sql.SQLException;
 import java.util.List;
 
-import bioportal.beans.ProvisionalTerm;
+import ui.beans.OTOProvisionalTerm;
+
 
 public interface IUnadoptedTermDAO {
 	
-	public List<ProvisionalTerm> getUnadoptedStructureTerms() throws SQLException; 
+	public List<OTOProvisionalTerm> getUnadoptedStructureTerms() throws SQLException; 
 	
-	public List<ProvisionalTerm> getUnadoptedCharacterTerms() throws SQLException;	
+	public List<OTOProvisionalTerm> getUnadoptedCharacterTerms() throws SQLException;	
 	
-	public ProvisionalTerm getUnadoptedTerm(String localId) throws SQLException;
+	public OTOProvisionalTerm getUnadoptedTerm(String localId) throws SQLException;
 
-	public ProvisionalTerm getFirstUnadoptedTerm() throws SQLException;
+	public OTOProvisionalTerm getFirstUnadoptedTerm() throws SQLException;
 
 	public void markNotSent(String localId) throws SQLException;
 

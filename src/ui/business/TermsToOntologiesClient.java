@@ -1,4 +1,4 @@
-package bioportal.client;
+package ui.business;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,12 +10,15 @@ import java.util.Properties;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
+import ui.beans.OTOProvisionalTerm;
+import ui.db.OTOProvisionalTermDAO;
+
 import bioportal.beans.Filter;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.beans.response.Entry;
 import bioportal.beans.response.Relations;
 import bioportal.beans.response.Success;
-import bioportal.db.ProvisionalTermDAO;
+import bioportal.client.BioPortalClient;
 
 public class TermsToOntologiesClient {
 
@@ -48,12 +51,12 @@ public class TermsToOntologiesClient {
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 */
-	public String sendTerm(ProvisionalTerm provisionalTerm) throws SQLException, JAXBException, ClassNotFoundException, IOException, IllegalArgumentException {
+	public String sendTerm(OTOProvisionalTerm provisionalTerm) throws SQLException, JAXBException, ClassNotFoundException, IOException, IllegalArgumentException {
 		Success success = bioPortalClient.createProvisionalTerm(provisionalTerm);
 		String temporaryId = getIdFromSuccessfulCreate(success, "id");
 		provisionalTerm.setTemporaryid(temporaryId);
 		provisionalTerm.setSubmittedby(bioportalUserId);
-		ProvisionalTermDAO.getInstance().addAwaitingAdoption(provisionalTerm);
+		OTOProvisionalTermDAO.getInstance().addAwaitingAdoption(provisionalTerm);
 		return temporaryId;
 	}
 	
@@ -66,8 +69,8 @@ public class TermsToOntologiesClient {
 	 */
 	public Map<String, String> checkTermAdoptions() throws SQLException, JAXBException, ClassNotFoundException, IOException  {
 		Map<String, String> result = new HashMap<String, String>();
-		List<ProvisionalTerm> allProvisionalTermsAwaitingAdoption = ProvisionalTermDAO.getInstance().getAllAwaitingAdoption();
-		for(ProvisionalTerm provisionalTerm : allProvisionalTermsAwaitingAdoption) {
+		List<OTOProvisionalTerm> allProvisionalTermsAwaitingAdoption = OTOProvisionalTermDAO.getInstance().getAllAwaitingAdoption();
+		for(OTOProvisionalTerm provisionalTerm : allProvisionalTermsAwaitingAdoption) {
 			String permanentId = null;
 			Success success = bioPortalClient.getProvisionalTerm(provisionalTerm.getTemporaryid());
 			List<Object> fullIdOrIdOrLabels = success.getData().getClassBean().getFullIdOrIdOrLabel();
@@ -88,8 +91,8 @@ public class TermsToOntologiesClient {
 				continue;
 			else {
 				provisionalTerm.setPermanentid(permanentId);
-				ProvisionalTermDAO.getInstance().deleteAwaitingAdoption(provisionalTerm);
-				ProvisionalTermDAO.getInstance().storeAdopted(provisionalTerm);
+				OTOProvisionalTermDAO.getInstance().deleteAwaitingAdoption(provisionalTerm);
+				OTOProvisionalTermDAO.getInstance().storeAdopted(provisionalTerm);
 				result.put(provisionalTerm.getTemporaryid(), permanentId);
 			}
 		}
@@ -109,14 +112,14 @@ public class TermsToOntologiesClient {
 		return null;
 	}
 
-	public void updateTerm(ProvisionalTerm provisionalTerm) throws JAXBException, SQLException, ClassNotFoundException, IOException {
+	public void updateTerm(OTOProvisionalTerm provisionalTerm) throws JAXBException, SQLException, ClassNotFoundException, IOException {
 		bioPortalClient.updateProvisionalTerm(provisionalTerm.getTemporaryid(), provisionalTerm);
-		ProvisionalTermDAO.getInstance().updateAwaitingAdoption(provisionalTerm);
+		OTOProvisionalTermDAO.getInstance().updateAwaitingAdoption(provisionalTerm);
 	}
 
-	public void deleteTerm(ProvisionalTerm provisionalTerm) throws JAXBException, SQLException, ClassNotFoundException, IOException {
+	public void deleteTerm(OTOProvisionalTerm provisionalTerm) throws JAXBException, SQLException, ClassNotFoundException, IOException {
 		bioPortalClient.deleteProvisionalTerm(provisionalTerm.getTemporaryid());
-		ProvisionalTermDAO.getInstance().deleteAwaitingAdoption(provisionalTerm);
+		OTOProvisionalTermDAO.getInstance().deleteAwaitingAdoption(provisionalTerm);
 	}
 	
 	public static void main(String[] args) throws IOException, JAXBException {

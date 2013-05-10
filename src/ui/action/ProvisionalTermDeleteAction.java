@@ -12,25 +12,24 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ui.beans.OTOProvisionalTerm;
+import ui.business.TermsToOntologiesClient;
 import ui.db.IUnadoptedTermDAO;
+import ui.db.OTOProvisionalTermDAO;
 import ui.db.UnadoptedTermDAO;
-import bioportal.OntologyMapper;
-import bioportal.beans.ProvisionalTerm;
-import bioportal.client.TermsToOntologiesClient;
-import bioportal.db.ProvisionalTermDAO;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
 public class ProvisionalTermDeleteAction extends ActionSupport implements SessionAware {
 
-	private ProvisionalTerm provisionalTerm;
+	private OTOProvisionalTerm provisionalTerm;
 	private String action = "update";
 	private List<String> ontologies = new ArrayList<String>();
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Map<String, Object> sessionMap;
-	private List<ProvisionalTerm> structureAwaitingAdoptionProvisionalTerms;
-	private List<ProvisionalTerm> characterAwaitingAdoptionProvisionalTerms;
+	private List<OTOProvisionalTerm> structureAwaitingAdoptionProvisionalTerms;
+	private List<OTOProvisionalTerm> characterAwaitingAdoptionProvisionalTerms;
 	
 	public ProvisionalTermDeleteAction() throws ClassNotFoundException, SQLException, IOException {
 		ontologies = OntologyMapper.getInstance().getOntologies();
@@ -46,8 +45,8 @@ public class ProvisionalTermDeleteAction extends ActionSupport implements Sessio
 			unadoptedTermDAO.markNotSent(provisionalTerm.getLocalId());
 			provisionalTerm = null;
 			addActionMessage(getText("success.delete"));
-			structureAwaitingAdoptionProvisionalTerms = ProvisionalTermDAO.getInstance().getAllStructureAwaitingAdoption();
-			characterAwaitingAdoptionProvisionalTerms = ProvisionalTermDAO.getInstance().getAllCharacterAwaitingAdoption();
+			structureAwaitingAdoptionProvisionalTerms = OTOProvisionalTermDAO.getInstance().getAllStructureAwaitingAdoption();
+			characterAwaitingAdoptionProvisionalTerms = OTOProvisionalTermDAO.getInstance().getAllCharacterAwaitingAdoption();
 			//if(ProvisionalTermDAO.getInstance().getFirstAwaitingTerm() == null)
 			//	return "empty";
 		} catch (SQLException e) {
@@ -79,11 +78,11 @@ public class ProvisionalTermDeleteAction extends ActionSupport implements Sessio
 		return SUCCESS;
 	}
 
-	public ProvisionalTerm getProvisionalTerm() {
+	public OTOProvisionalTerm getProvisionalTerm() {
 		return provisionalTerm;
 	}
 
-	public void setProvisionalTerm(ProvisionalTerm provisionalTerm) {
+	public void setProvisionalTerm(OTOProvisionalTerm provisionalTerm) {
 		this.provisionalTerm = provisionalTerm;
 	}
 	
@@ -108,21 +107,21 @@ public class ProvisionalTermDeleteAction extends ActionSupport implements Sessio
 		this.sessionMap = sessionMap;
 	}
 
-	public List<ProvisionalTerm> getStructureAwaitingAdoptionProvisionalTerms() {
+	public List<OTOProvisionalTerm> getStructureAwaitingAdoptionProvisionalTerms() {
 		return structureAwaitingAdoptionProvisionalTerms;
 	}
 
 	public void setStructureAwaitingAdoptionProvisionalTerms(
-			List<ProvisionalTerm> structureAwaitingAdoptionProvisionalTerms) {
+			List<OTOProvisionalTerm> structureAwaitingAdoptionProvisionalTerms) {
 		this.structureAwaitingAdoptionProvisionalTerms = structureAwaitingAdoptionProvisionalTerms;
 	}
 
-	public List<ProvisionalTerm> getCharacterAwaitingAdoptionProvisionalTerms() {
+	public List<OTOProvisionalTerm> getCharacterAwaitingAdoptionProvisionalTerms() {
 		return characterAwaitingAdoptionProvisionalTerms;
 	}
 
 	public void setCharacterAwaitingAdoptionProvisionalTerms(
-			List<ProvisionalTerm> characterAwaitingAdoptionProvisionalTerms) {
+			List<OTOProvisionalTerm> characterAwaitingAdoptionProvisionalTerms) {
 		this.characterAwaitingAdoptionProvisionalTerms = characterAwaitingAdoptionProvisionalTerms;
 	}
 	

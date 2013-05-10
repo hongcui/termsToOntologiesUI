@@ -10,37 +10,36 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ui.beans.OTOProvisionalTerm;
 import ui.db.IUnadoptedTermDAO;
+import ui.db.OTOProvisionalTermDAO;
 import ui.db.UnadoptedTermDAO;
-import bioportal.OntologyMapper;
-import bioportal.beans.ProvisionalTerm;
-import bioportal.db.ProvisionalTermDAO;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ProvisionalTermAction extends ActionSupport implements SessionAware {
 
-	private ProvisionalTerm provisionalTerm;
+	private OTOProvisionalTerm provisionalTerm;
 	private String localId;
 	private String action;
 	private List<String> ontologies = new ArrayList<String>();
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Map<String, Object> sessionMap;
-	private List<ProvisionalTerm> structureProvisionalTerms;
-	private List<ProvisionalTerm> characterProvisionalTerms;
-	private List<ProvisionalTerm> structureAwaitingAdoptionProvisionalTerms;
-	private List<ProvisionalTerm> characterAwaitingAdoptionProvisionalTerms;
-	private List<ProvisionalTerm> structureAdoptedProvisionalTerms;
-	private List<ProvisionalTerm> characterAdoptedProvisionalTerms;
+	private List<OTOProvisionalTerm> structureProvisionalTerms;
+	private List<OTOProvisionalTerm> characterProvisionalTerms;
+	private List<OTOProvisionalTerm> structureAwaitingAdoptionProvisionalTerms;
+	private List<OTOProvisionalTerm> characterAwaitingAdoptionProvisionalTerms;
+	private List<OTOProvisionalTerm> structureAdoptedProvisionalTerms;
+	private List<OTOProvisionalTerm> characterAdoptedProvisionalTerms;
 	
 	public ProvisionalTermAction() throws ClassNotFoundException, SQLException, IOException {
 		ontologies = OntologyMapper.getInstance().getOntologies();
 		structureProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedStructureTerms();
 		characterProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedCharacterTerms();
-		structureAwaitingAdoptionProvisionalTerms = ProvisionalTermDAO.getInstance().getAllStructureAwaitingAdoption();
-		characterAwaitingAdoptionProvisionalTerms = ProvisionalTermDAO.getInstance().getAllCharacterAwaitingAdoption();
-		structureAdoptedProvisionalTerms = ProvisionalTermDAO.getInstance().getAdoptedStructureTerms();
-		characterAdoptedProvisionalTerms = ProvisionalTermDAO.getInstance().getAdoptedCharacterTerms();
+		structureAwaitingAdoptionProvisionalTerms = OTOProvisionalTermDAO.getInstance().getAllStructureAwaitingAdoption();
+		characterAwaitingAdoptionProvisionalTerms = OTOProvisionalTermDAO.getInstance().getAllCharacterAwaitingAdoption();
+		structureAdoptedProvisionalTerms = OTOProvisionalTermDAO.getInstance().getAdoptedStructureTerms();
+		characterAdoptedProvisionalTerms = OTOProvisionalTermDAO.getInstance().getAdoptedCharacterTerms();
 	}
 
 	public String execute() {
@@ -51,10 +50,10 @@ public class ProvisionalTermAction extends ActionSupport implements SessionAware
 				provisionalTerm = unadoptedTermDAO.getUnadoptedTerm(localId);				
 				return SUCCESS;
 			case "update":
-				provisionalTerm = ProvisionalTermDAO.getInstance().getAwaitingAdoption(localId);
+				provisionalTerm = OTOProvisionalTermDAO.getInstance().getAwaitingAdoption(localId);
 				return SUCCESS;
 			case "adopted":
-				provisionalTerm = ProvisionalTermDAO.getInstance().getAdopted(localId);
+				provisionalTerm = OTOProvisionalTermDAO.getInstance().getAdopted(localId);
 				return SUCCESS;
 			default:
 				addActionError("Unknown action");
@@ -75,11 +74,11 @@ public class ProvisionalTermAction extends ActionSupport implements SessionAware
 		}
 	}
 
-	public ProvisionalTerm getProvisionalTerm() {
+	public OTOProvisionalTerm getProvisionalTerm() {
 		return provisionalTerm;
 	}
 
-	public void setProvisionalTerm(ProvisionalTerm provisionalTerm) {
+	public void setProvisionalTerm(OTOProvisionalTerm provisionalTerm) {
 		this.provisionalTerm = provisionalTerm;
 	}
 
@@ -112,57 +111,57 @@ public class ProvisionalTermAction extends ActionSupport implements SessionAware
 		this.sessionMap = sessionMap;
 	}
 
-	public List<ProvisionalTerm> getStructureProvisionalTerms() {
+	public List<OTOProvisionalTerm> getStructureProvisionalTerms() {
 		return structureProvisionalTerms;
 	}
 
 	public void setStructureProvisionalTerms(
-			List<ProvisionalTerm> structureProvisionalTerms) {
+			List<OTOProvisionalTerm> structureProvisionalTerms) {
 		this.structureProvisionalTerms = structureProvisionalTerms;
 	}
 
-	public List<ProvisionalTerm> getCharacterProvisionalTerms() {
+	public List<OTOProvisionalTerm> getCharacterProvisionalTerms() {
 		return characterProvisionalTerms;
 	}
 
 	public void setCharacterProvisionalTerms(
-			List<ProvisionalTerm> characterProvisionalTerms) {
+			List<OTOProvisionalTerm> characterProvisionalTerms) {
 		this.characterProvisionalTerms = characterProvisionalTerms;
 	}
 	
-	public List<ProvisionalTerm> getStructureAwaitingAdoptionProvisionalTerms() {
+	public List<OTOProvisionalTerm> getStructureAwaitingAdoptionProvisionalTerms() {
 		return structureAwaitingAdoptionProvisionalTerms;
 	}
 
 	public void setStructureAwaitingAdoptionProvisionalTerms(
-			List<ProvisionalTerm> structureAwaitingAdoptionProvisionalTerms) {
+			List<OTOProvisionalTerm> structureAwaitingAdoptionProvisionalTerms) {
 		this.structureAwaitingAdoptionProvisionalTerms = structureAwaitingAdoptionProvisionalTerms;
 	}
 
-	public List<ProvisionalTerm> getCharacterAwaitingAdoptionProvisionalTerms() {
+	public List<OTOProvisionalTerm> getCharacterAwaitingAdoptionProvisionalTerms() {
 		return characterAwaitingAdoptionProvisionalTerms;
 	}
 
 	public void setCharacterAwaitingAdoptionProvisionalTerms(
-			List<ProvisionalTerm> characterAwaitingAdoptionProvisionalTerms) {
+			List<OTOProvisionalTerm> characterAwaitingAdoptionProvisionalTerms) {
 		this.characterAwaitingAdoptionProvisionalTerms = characterAwaitingAdoptionProvisionalTerms;
 	}
 
-	public List<ProvisionalTerm> getStructureAdoptedProvisionalTerms() {
+	public List<OTOProvisionalTerm> getStructureAdoptedProvisionalTerms() {
 		return structureAdoptedProvisionalTerms;
 	}
 
 	public void setStructureAdoptedProvisionalTerms(
-			List<ProvisionalTerm> structureAdoptedProvisionalTerms) {
+			List<OTOProvisionalTerm> structureAdoptedProvisionalTerms) {
 		this.structureAdoptedProvisionalTerms = structureAdoptedProvisionalTerms;
 	}
 
-	public List<ProvisionalTerm> getCharacterAdoptedProvisionalTerms() {
+	public List<OTOProvisionalTerm> getCharacterAdoptedProvisionalTerms() {
 		return characterAdoptedProvisionalTerms;
 	}
 
 	public void setCharacterAdoptedProvisionalTerms(
-			List<ProvisionalTerm> characterAdoptedProvisionalTerms) {
+			List<OTOProvisionalTerm> characterAdoptedProvisionalTerms) {
 		this.characterAdoptedProvisionalTerms = characterAdoptedProvisionalTerms;
 	}
 	

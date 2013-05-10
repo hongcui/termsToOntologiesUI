@@ -12,24 +12,23 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ui.beans.OTOProvisionalTerm;
+import ui.business.TermsToOntologiesClient;
 import ui.db.IUnadoptedTermDAO;
 import ui.db.UnadoptedTermDAO;
-import bioportal.OntologyMapper;
-import bioportal.beans.ProvisionalTerm;
-import bioportal.client.TermsToOntologiesClient;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
 public class ProvisionalTermSubmissionAction extends ActionSupport implements SessionAware {
 
-	private ProvisionalTerm provisionalTerm;
+	private OTOProvisionalTerm provisionalTerm;
 	private String action = "send";
 	private List<String> ontologies = new ArrayList<String>();
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Map<String, Object> sessionMap;
-	private List<ProvisionalTerm> structureProvisionalTerms;
-	private List<ProvisionalTerm> characterProvisionalTerms;
+	private List<OTOProvisionalTerm> structureProvisionalTerms;
+	private List<OTOProvisionalTerm> characterProvisionalTerms;
 	
 	public ProvisionalTermSubmissionAction() throws ClassNotFoundException, SQLException, IOException {
 		ontologies = OntologyMapper.getInstance().getOntologies();
@@ -80,11 +79,11 @@ public class ProvisionalTermSubmissionAction extends ActionSupport implements Se
 		return SUCCESS;
 	}
 
-	public ProvisionalTerm getProvisionalTerm() {
+	public OTOProvisionalTerm getProvisionalTerm() {
 		return provisionalTerm;
 	}
 
-	public void setProvisionalTerm(ProvisionalTerm provisionalTerm) {
+	public void setProvisionalTerm(OTOProvisionalTerm provisionalTerm) {
 		this.provisionalTerm = provisionalTerm;
 	}
 
@@ -109,21 +108,21 @@ public class ProvisionalTermSubmissionAction extends ActionSupport implements Se
 		this.sessionMap = sessionMap;
 	}
 
-	public List<ProvisionalTerm> getStructureProvisionalTerms() {
+	public List<OTOProvisionalTerm> getStructureProvisionalTerms() {
 		return structureProvisionalTerms;
 	}
 
 	public void setStructureProvisionalTerms(
-			List<ProvisionalTerm> structureProvisionalTerms) {
+			List<OTOProvisionalTerm> structureProvisionalTerms) {
 		this.structureProvisionalTerms = structureProvisionalTerms;
 	}
 
-	public List<ProvisionalTerm> getCharacterProvisionalTerms() {
+	public List<OTOProvisionalTerm> getCharacterProvisionalTerms() {
 		return characterProvisionalTerms;
 	}
 
 	public void setCharacterProvisionalTerms(
-			List<ProvisionalTerm> characterProvisionalTerms) {
+			List<OTOProvisionalTerm> characterProvisionalTerms) {
 		this.characterProvisionalTerms = characterProvisionalTerms;
 	}
 	

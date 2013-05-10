@@ -1,10 +1,8 @@
-package db;
+package ui.db;
 
 import java.util.Properties;
 
 import ui.beans.User;
-import ui.db.UnadoptedTermDAO;
-import ui.db.UserDAO;
 
 public class CreateAllTables {
 

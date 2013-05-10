@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ page import="java.util.List, ui.db.*, bioportal.beans.*, bioportal.db.*, javax.servlet.http.HttpSession, ui.action.*" %>
+<%@ page import="java.util.List, ui.db.*, ui.beans.*, ui.business.*, javax.servlet.http.HttpSession, ui.action.*" %>
 
 <s:if test="%{action=='send'}">
 	<h2>New Terms</h2>

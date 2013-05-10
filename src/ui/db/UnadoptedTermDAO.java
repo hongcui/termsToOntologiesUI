@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bioportal.beans.ProvisionalTerm;
-import db.AbstractDAO;
+import ui.beans.OTOProvisionalTerm;
+
 
 public class UnadoptedTermDAO extends AbstractDAO implements IUnadoptedTermDAO {
 
@@ -22,15 +22,15 @@ public class UnadoptedTermDAO extends AbstractDAO implements IUnadoptedTermDAO {
 		return instance;
 	}
 	
-	public List<ProvisionalTerm> getUnadoptedStructureTerms() throws SQLException {
-		List<ProvisionalTerm> result = new ArrayList<ProvisionalTerm>();
+	public List<OTOProvisionalTerm> getUnadoptedStructureTerms() throws SQLException {
+		List<OTOProvisionalTerm> result = new ArrayList<OTOProvisionalTerm>();
 		this.openConnection();
 		
 		String sql = "SELECT * FROM dummynewterms WHERE sentMarker = 0 AND termType = 'structure'";
 		PreparedStatement preparedStatement = this.executeSQL(sql);
 		ResultSet resultSet = preparedStatement.getResultSet();
 		while(resultSet.next()) {
-			result.add(new ProvisionalTerm(
+			result.add(new OTOProvisionalTerm(
 						resultSet.getString("localId"),
 						resultSet.getString("term"),
 						resultSet.getString("termType"),
@@ -50,15 +50,15 @@ public class UnadoptedTermDAO extends AbstractDAO implements IUnadoptedTermDAO {
 		return result;
 	}
 	
-	public List<ProvisionalTerm> getUnadoptedCharacterTerms() throws SQLException {
-		List<ProvisionalTerm> result = new ArrayList<ProvisionalTerm>();
+	public List<OTOProvisionalTerm> getUnadoptedCharacterTerms() throws SQLException {
+		List<OTOProvisionalTerm> result = new ArrayList<OTOProvisionalTerm>();
 		this.openConnection();
 		
 		String sql = "SELECT * FROM dummynewterms WHERE sentMarker = 0 AND termType = 'character'";
 		PreparedStatement preparedStatement = this.executeSQL(sql);
 		ResultSet resultSet = preparedStatement.getResultSet();
 		while(resultSet.next()) {
-			result.add(new ProvisionalTerm(
+			result.add(new OTOProvisionalTerm(
 						resultSet.getString("localId"),
 						resultSet.getString("term"),
 						resultSet.getString("termType"),
@@ -78,14 +78,14 @@ public class UnadoptedTermDAO extends AbstractDAO implements IUnadoptedTermDAO {
 		return result;
 	}
 
-	public ProvisionalTerm getUnadoptedTerm(String localId) throws SQLException {
-		ProvisionalTerm result = null;
+	public OTOProvisionalTerm getUnadoptedTerm(String localId) throws SQLException {
+		OTOProvisionalTerm result = null;
 		this.openConnection();
 		String sql = "SELECT * FROM dummynewterms WHERE localId = " + localId;
 		PreparedStatement preparedStatement = this.executeSQL(sql);
 		ResultSet resultSet = preparedStatement.getResultSet();
 		resultSet.next();
-		result = new ProvisionalTerm(
+		result = new OTOProvisionalTerm(
 				resultSet.getString("localId"),
 				resultSet.getString("term"),
 				resultSet.getString("termType"),
@@ -132,14 +132,14 @@ public class UnadoptedTermDAO extends AbstractDAO implements IUnadoptedTermDAO {
 		this.closeConnection();
 	}
 
-	public ProvisionalTerm getFirstUnadoptedTerm() throws SQLException {
-		ProvisionalTerm result = null;
+	public OTOProvisionalTerm getFirstUnadoptedTerm() throws SQLException {
+		OTOProvisionalTerm result = null;
 		this.openConnection();
 		String sql = "SELECT * FROM dummynewterms WHERE sentMarker = 0 ORDER BY localId";
 		PreparedStatement preparedStatement = this.executeSQL(sql);
 		ResultSet resultSet = preparedStatement.getResultSet();
 		resultSet.next();
-		result = new ProvisionalTerm(
+		result = new OTOProvisionalTerm(
 				resultSet.getString("localId"),
 				resultSet.getString("term"),
 				resultSet.getString("termType"),
