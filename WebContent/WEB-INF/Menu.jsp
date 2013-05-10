@@ -45,6 +45,9 @@
 		</s:url>
 		<s:a href="%{termURL}">
 			<s:property value="term"></s:property>
+			<s:if test="%{submittedby==#session.BIOPORTAL_USER_ID}">
+				*
+			</s:if>
 		</s:a>
 	</s:iterator>
 	<h3>Character</h3>
@@ -57,6 +60,9 @@
 		</s:url>
 		<s:a href="%{termURL}">
 			<s:property value="term"></s:property>
+			<s:if test="%{submittedby==#session.BIOPORTAL_USER_ID}">
+				*
+			</s:if>
 		</s:a>
 	</s:iterator>
 </s:if>
@@ -75,6 +81,9 @@
 		</s:url>
 		<s:a href="%{termURL}">
 			<s:property value="term"></s:property>
+			<s:if test="%{submittedby==#session.BIOPORTAL_USER_ID}">
+				*
+			</s:if>
 		</s:a>
 	</s:iterator>
 	<h3>Character</h3>
@@ -87,6 +96,9 @@
 		</s:url>
 		<s:a href="%{termURL}">
 			<s:property value="term"></s:property>
+			<s:if test="%{submittedby==#session.BIOPORTAL_USER_ID}">
+				*
+			</s:if>
 		</s:a>
 	</s:iterator>
 </s:if>

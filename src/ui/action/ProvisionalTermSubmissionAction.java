@@ -28,8 +28,10 @@ public class ProvisionalTermSubmissionAction extends ActionSupport implements Se
 	private List<String> ontologies = new ArrayList<String>();
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Map<String, Object> sessionMap;
+	private List<ProvisionalTerm> structureProvisionalTerms;
+	private List<ProvisionalTerm> characterProvisionalTerms;
 	
-	public ProvisionalTermSubmissionAction() {
+	public ProvisionalTermSubmissionAction() throws ClassNotFoundException, SQLException, IOException {
 		ontologies = OntologyMapper.getInstance().getOntologies();
 	}
 	
@@ -43,6 +45,8 @@ public class ProvisionalTermSubmissionAction extends ActionSupport implements Se
 			unadoptedTermDAO.markSent(provisionalTerm.getLocalId());
 			addActionMessage(getText("success.send"));
 			provisionalTerm = null;
+			structureProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedStructureTerms();
+			characterProvisionalTerms = UnadoptedTermDAO.getInstance().getUnadoptedCharacterTerms();
 		} catch (IllegalArgumentException e) {
 			addActionError(getText("error.parameters"));
 			logger.error(e.getMessage());
@@ -104,4 +108,24 @@ public class ProvisionalTermSubmissionAction extends ActionSupport implements Se
 	public void setSession(Map<String, Object> sessionMap) {
 		this.sessionMap = sessionMap;
 	}
+
+	public List<ProvisionalTerm> getStructureProvisionalTerms() {
+		return structureProvisionalTerms;
+	}
+
+	public void setStructureProvisionalTerms(
+			List<ProvisionalTerm> structureProvisionalTerms) {
+		this.structureProvisionalTerms = structureProvisionalTerms;
+	}
+
+	public List<ProvisionalTerm> getCharacterProvisionalTerms() {
+		return characterProvisionalTerms;
+	}
+
+	public void setCharacterProvisionalTerms(
+			List<ProvisionalTerm> characterProvisionalTerms) {
+		this.characterProvisionalTerms = characterProvisionalTerms;
+	}
+	
+	
 }

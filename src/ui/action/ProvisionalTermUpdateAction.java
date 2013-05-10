@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import bioportal.OntologyMapper;
 import bioportal.beans.ProvisionalTerm;
 import bioportal.client.TermsToOntologiesClient;
+import bioportal.db.ProvisionalTermDAO;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -26,8 +27,10 @@ public class ProvisionalTermUpdateAction extends ActionSupport implements Sessio
 	private List<String> ontologies = new ArrayList<String>();
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Map<String, Object> sessionMap;
+	private List<ProvisionalTerm> structureAwaitingAdoptionProvisionalTerms;
+	private List<ProvisionalTerm> characterAwaitingAdoptionProvisionalTerms;
 	
-	public ProvisionalTermUpdateAction() {
+	public ProvisionalTermUpdateAction() throws ClassNotFoundException, SQLException, IOException {
 		ontologies = OntologyMapper.getInstance().getOntologies();
 	}
 	
@@ -38,6 +41,8 @@ public class ProvisionalTermUpdateAction extends ActionSupport implements Sessio
 					(String)sessionMap.get(SessionVariables.BIOPORTAL_API_KEY.toString()));
 			termsToOntologiesClient.updateTerm(provisionalTerm);
 			addActionMessage(getText("success.update"));
+			structureAwaitingAdoptionProvisionalTerms = ProvisionalTermDAO.getInstance().getAllStructureAwaitingAdoption();
+			characterAwaitingAdoptionProvisionalTerms = ProvisionalTermDAO.getInstance().getAllCharacterAwaitingAdoption();
 		} catch (SQLException e) {
 			addActionError(getText("error.db"));
 			logger.error(e.getMessage());
@@ -95,4 +100,24 @@ public class ProvisionalTermUpdateAction extends ActionSupport implements Sessio
 	public void setSession(Map<String, Object> sessionMap) {
 		this.sessionMap = sessionMap;
 	}
+
+	public List<ProvisionalTerm> getStructureAwaitingAdoptionProvisionalTerms() {
+		return structureAwaitingAdoptionProvisionalTerms;
+	}
+
+	public void setStructureAwaitingAdoptionProvisionalTerms(
+			List<ProvisionalTerm> structureAwaitingAdoptionProvisionalTerms) {
+		this.structureAwaitingAdoptionProvisionalTerms = structureAwaitingAdoptionProvisionalTerms;
+	}
+
+	public List<ProvisionalTerm> getCharacterAwaitingAdoptionProvisionalTerms() {
+		return characterAwaitingAdoptionProvisionalTerms;
+	}
+
+	public void setCharacterAwaitingAdoptionProvisionalTerms(
+			List<ProvisionalTerm> characterAwaitingAdoptionProvisionalTerms) {
+		this.characterAwaitingAdoptionProvisionalTerms = characterAwaitingAdoptionProvisionalTerms;
+	}
+	
+	
 }

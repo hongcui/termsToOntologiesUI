@@ -5,14 +5,15 @@
 <s:actionmessage />
 
 <s:if test="%{provisionalTerm.term!=''}">
-
 <script type="text/javascript" src="<s:url value="js.js"/>"></script>  
+
 <s:if test="%{action=='send'}">
 <s:if test="%{provisionalTerm.localId!=''}">
 <s:form action="provisionalTermSubmission" method="post" validate="true">
 		<s:hidden name="provisionalTerm.localId" />
 		<s:hidden name="provisionalTerm.termType" />
 		<s:hidden name="provisionalTerm.temporaryid" />
+		<s:hidden name="provisionalTerm.submittedby" />
 		<s:textfield name="provisionalTerm.term" key="term"/>
         <s:textfield name="provisionalTerm.definition" key="definition"/>    
         <s:textfield name="provisionalTerm.synonyms" key="synonyms"/>
@@ -37,6 +38,7 @@
 		<s:hidden name="provisionalTerm.localId" />
 		<s:hidden name="provisionalTerm.termType" />
 		<s:hidden name="provisionalTerm.temporaryid" />
+		<s:hidden name="provisionalTerm.submittedby" />
 		<s:textfield name="provisionalTerm.term" key="term"/>
         <s:textfield name="provisionalTerm.definition" key="definition"/>    
         <s:textfield name="provisionalTerm.synonyms" key="synonyms"/>
